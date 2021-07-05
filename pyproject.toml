@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "choose_flight"
+version = "0.1.0"
+description = ""
+authors = ["ramilabd <ramsmart@mail.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+lxml = "^4.6.3"
+
+[tool.poetry.dev-dependencies]
+wemake-python-styleguide = "^0.15.3"
+pytest = "^6.2.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
