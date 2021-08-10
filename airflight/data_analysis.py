@@ -1,10 +1,9 @@
-import json
-from operator import lt, gt
-from get_xml_tree import get_xml_tree
+import operator
+from .parser_xml import get_xml_tree
 
 
-def get_all_flights(tree_xml):
-    root = tree_xml.getroot()
+def get_all_flights():
+    root = get_xml_tree('./airflight/data/RS_Via-3.xml')().getroot()
     all_flights = []
 
     for Flights in root.xpath('//OnwardPricedItinerary/Flights'):
@@ -33,13 +32,14 @@ def get_all_flights(tree_xml):
     return all_flights
 
 
-def get_flights_sorted_price(all_flights, compare=''):
+def get_flights_sorted_price(compare=''):
+    all_flights = get_all_flights()
     operation = {
-        'min': lt,
-        'max': gt,
+        'min': operator.lt,
+        'max': operator.gt,
     }
 
-    list_max_price = []
+    list_price = []
     max_price = float(all_flights[0]['Price']['TicketPrice'])
 
     for flight in all_flights:
@@ -47,9 +47,9 @@ def get_flights_sorted_price(all_flights, compare=''):
         index = all_flights.index(flight)
         if operation[compare](price, max_price):
             max_price = price
-            list_max_price = []
-            list_max_price.append(all_flights[index])
+            list_price = []
+            list_price.append(all_flights[index])
         elif price == max_price:
-            list_max_price.append(all_flights[index])
+            list_price.append(all_flights[index])
 
-    return list_max_price
+    return list_price
