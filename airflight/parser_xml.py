@@ -12,16 +12,16 @@ def sha256sum(filename):
         return h.hexdigest()
 
 
-def get_xml_tree(filename):
+def get_xml_tree(filepath):
     memory_file_and_hash = {}
 
     def memorize_file_and_hash():
-        file_hash = sha256sum(filename)
+        file_hash = sha256sum(filepath)
 
         if file_hash == memory_file_and_hash.get(file_hash):
             return memory_file_and_hash.get('tree')
         else:
-            tree = etree.parse(filename)
+            tree = etree.parse(filepath)
             memory_file_and_hash['file_hash'] = file_hash
             memory_file_and_hash['tree'] = tree
             return tree
