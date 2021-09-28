@@ -208,3 +208,10 @@ def get_optimal_route(source, destination, flights_number=5):
         optimal_route.append(filtered_flight_direction[index])
 
     return optimal_route
+
+
+def formatting_time(flights):
+    for flight in flights:
+        flight['TotalTravelTime'] = str(flight['TotalTravelTime'])
+
+    return flights
