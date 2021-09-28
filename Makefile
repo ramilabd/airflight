@@ -7,4 +7,7 @@ start-app:
 test:
 	poetry run pytest -v
 
+lint:
+	poetry run flake8 airflight
+
 .PHONY: test
