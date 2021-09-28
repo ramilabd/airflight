@@ -64,7 +64,7 @@ def test_get_flights_filtered_direction():
     def is_correct_sorting_by_direction(source, destination):
         flights = get_all_flights()
         sorted_flights_with_source_destination = get_flights_filtered_direction(
-            flights, source, destination)
+                source, destination)
         sorted_flights_without_source_destination = []
 
         for flight in flights:
@@ -85,7 +85,7 @@ def test_get_flights_filtered_direction():
 def test_get_all_routes():
     all_flights = get_all_flights()
     total_count_flights = len(all_flights)
-    all_routes = get_all_routes(all_flights)
+    all_routes = get_all_routes()
     count_each_route = {}
     for route in all_routes:
         direction = '{0}-{1}-{2}'.format(route['Source'],
@@ -101,7 +101,7 @@ def test_get_all_routes():
 
 def test_get_optimal_route():
     all_flights = get_all_flights()
-    optimal_route = get_optimal_route(all_flights, 'DXB', 'BKK')
+    optimal_route = get_optimal_route('DXB', 'BKK')
 
     def get_median_time(flights):
         times = []
