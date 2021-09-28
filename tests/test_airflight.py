@@ -1,11 +1,8 @@
-from airflight.data_analysis import (
-    get_all_flights,
-    get_flights_sorted_price,
-    get_flights_sorted_time,
-    get_flights_filtered_direction,
-    get_all_routes,
-    get_optimal_route
-)
+from airflight.data_analysis import (get_all_flights, get_all_routes,
+                                     get_flights_filtered_direction,
+                                     get_flights_sorted_price,
+                                     get_flights_sorted_time,
+                                     get_optimal_route)
 
 
 def test_get_all_flights():

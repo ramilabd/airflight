@@ -1,15 +1,12 @@
-from flask import Flask, jsonify
-from .data_analysis import (
-    formatting_time,
-    get_all_flights,
-    get_flights_filtered_direction,
-    get_flights_sorted_price,
-    get_flights_sorted_time,
-    get_all_routes,
-    get_optimal_route,
-    formatting_time
-)
+# -*- coding:utf-8 -*-
+"""Flask application module."""
 
+
+from data_analysis import (formatting_time, get_all_flights, get_all_routes,
+                           get_flights_filtered_direction,
+                           get_flights_sorted_price, get_flights_sorted_time,
+                           get_optimal_route)
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
