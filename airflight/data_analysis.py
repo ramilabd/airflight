@@ -100,11 +100,12 @@ def get_flights_sorted_time(flights, reverse=False, flights_number=None):
     Returns:
         list: a list of flights sorted by time.
     """
+
     return sorted(flights, key=lambda flight: flight['TotalTravelTime'],
                 reverse=reverse)[:flights_number]
 
 
-def get_flights_filtered_direction(flights, source, destination):
+def get_flights_filtered_direction(source, destination):
     """Returns a list of flights sorted by directions.
 
     Args:
@@ -116,6 +117,7 @@ def get_flights_filtered_direction(flights, source, destination):
     Returns:
         list: a list of flights sorted by destination.
     """
+    flights = get_all_flights()
     sorted_flights = []
 
     for flight in flights:
@@ -131,7 +133,7 @@ def get_flights_filtered_direction(flights, source, destination):
     return sorted_flights
 
 
-def get_all_routes(flights):
+def get_all_routes():
     """Returns all possible routes.
     With an indication of the place of departure, transfer and destination.
 
@@ -143,6 +145,7 @@ def get_all_routes(flights):
         list: list of routes (source, transfer, destination),
             each route is represented by a dictionary.
     """
+    flights = get_all_flights()
     all_routes = []
 
     for flight in flights:
@@ -158,7 +161,7 @@ def get_all_routes(flights):
     return all_routes
 
 
-def get_optimal_route(flights, source, destination, flights_number=5):
+def get_optimal_route(source, destination, flights_number=5):
     """Returns optimal flight routes (by time and price).
 
     Args:
@@ -172,7 +175,8 @@ def get_optimal_route(flights, source, destination, flights_number=5):
     Returns:
         list: a list of optimal flights (by time and price).
     """
-    filtered_flight_direction = get_flights_filtered_direction(flights,
+    flights = get_all_flights()
+    filtered_flight_direction = get_flights_filtered_direction(
         source, destination
     )
 
