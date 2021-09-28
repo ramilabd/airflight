@@ -1,7 +1,7 @@
 # Решение [тестового задания](https://github.com/KosyanMedia/test-tasks/tree/master/assisted_team) в команду ассистеда компании [Aviasales](https://www.aviasales.ru/?origin=REN)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d1b95433d2a787079231/maintainability)](https://codeclimate.com/github/ramilabd/aviasales-assisted_team_solution/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d1b95433d2a787079231/test_coverage)](https://codeclimate.com/github/ramilabd/aviasales-assisted_team_solution/test_coverage)
 
 ## Описание
 
