@@ -8,6 +8,6 @@ test:
 	poetry run pytest -v
 
 lint:
-	poetry run flake8 airflight
+	poetry run flake8 airflight tests
 
-.PHONY: test
+.PHONY: test tests
