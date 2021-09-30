@@ -2,6 +2,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/d1b95433d2a787079231/maintainability)](https://codeclimate.com/github/ramilabd/aviasales-assisted_team_solution/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d1b95433d2a787079231/test_coverage)](https://codeclimate.com/github/ramilabd/aviasales-assisted_team_solution/test_coverage)
+![Python Application](https://github.com/ramilabd/aviasales-assisted_team_solution/actions/workflows/python-app.yml/badge.svg)
 
 ## Описание
 
