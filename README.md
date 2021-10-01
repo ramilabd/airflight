@@ -4,6 +4,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d1b95433d2a787079231/test_coverage)](https://codeclimate.com/github/ramilabd/aviasales-assisted_team_solution/test_coverage)
 ![TestLint](https://github.com/ramilabd/aviasales-assisted_team_solution/actions/workflows/python-ci.yml/badge.svg)
 [![Build Status](https://app.travis-ci.com/ramilabd/aviasales-assisted_team_solution.svg?branch=main)](https://app.travis-ci.com/ramilabd/aviasales-assisted_team_solution)
+[![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
 
 ## Описание
 
