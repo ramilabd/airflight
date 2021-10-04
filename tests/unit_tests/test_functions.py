@@ -2,7 +2,6 @@
 """Tests the functions of web service."""
 
 from airflight.data_analysis import (
-    get_all_flights,
     get_all_routes,
     get_flights_filtered_direction,
     get_flights_sorted_price,
@@ -11,8 +10,15 @@ from airflight.data_analysis import (
 )
 
 
-def test_get_all_flights():
-    assert len(get_all_flights()) == 200
+def test_get_all_flights(all_flights):
+    """Test of the function get_all_flights.
+
+    Args:
+        all_flights (fixture): a fixture function that returns a function that,
+            when called, returns a list of flights, where each flight is
+            represented by a dictionary
+    """
+    assert len(all_flights()) == 200
 
 
 def test_get_flights_sorted_price():
