@@ -67,7 +67,7 @@ def add_total_travel_time(flight, str_time=False):
     return flight
 
 
-def get_flights_sorted_price(flights, reverse=False, flights_number=None):
+def get_flights_sorted_price(flights, reverse=False):
     """Returns a list of flights sorted by price.
 
     Args:
@@ -75,18 +75,18 @@ def get_flights_sorted_price(flights, reverse=False, flights_number=None):
             by a dictionary.
         reverse (bool, optional): defines the sorting order,
             by default to False - ascending, if True sort in descending order.
-        number_flights (int, optional): the number of flights that
-            need to be returned, if None returns the entire sorted list.
-            Defaults to None.
 
     Returns:
         list: a list of flights sorted by price.
     """
-    return sorted(flights, key=lambda flight: float(flight['Price']['TicketPrice']),
-                reverse=reverse)[:flights_number]
+    return sorted(
+        flights,
+        key=lambda flight: float(flight['Price']['TicketPrice']),
+        reverse=reverse,
+    )
 
 
-def get_flights_sorted_time(flights, reverse=False, flights_number=None):
+def get_flights_sorted_time(flights, reverse=False):
     """Returns a list of flights sorted by time.
 
     Args:
@@ -94,16 +94,15 @@ def get_flights_sorted_time(flights, reverse=False, flights_number=None):
             by a dictionary.
         reverse (bool, optional): defines the sorting order,
             by default to False - ascending, if True sort in descending order.
-        number_flights (int, optional): the number of flights that
-            need to be returned, if None returns the entire sorted list.
-            Defaults to None.
 
     Returns:
         list: a list of flights sorted by time.
     """
-
-    return sorted(flights, key=lambda flight: flight['TotalTravelTime'],
-                reverse=reverse)[:flights_number]
+    return sorted(
+        flights,
+        key=lambda flight: flight['TotalTravelTime'],
+        reverse=reverse,
+    )
 
 
 def get_flights_filtered_direction(source, destination):
