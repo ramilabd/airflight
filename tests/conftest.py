@@ -3,7 +3,7 @@
 
 import pytest
 
-from data_analysis import get_all_flights
+from airflight.data_analysis import get_all_flights
 
 
 @pytest.fixture

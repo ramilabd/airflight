@@ -2,6 +2,7 @@
 """Tests the functions of web service."""
 
 from airflight.data_analysis import (
+    get_all_flights,
     get_all_routes,
     get_flights_filtered_direction,
     get_flights_sorted_price,
