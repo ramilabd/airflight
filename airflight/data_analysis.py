@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from .parser_xml import get_xml_tree
+from .parser_xml import FILE_PATH, get_xml_tree
 
 
 def get_all_flights():
@@ -9,7 +9,7 @@ def get_all_flights():
     Returns:
         list: list of flights, each flight is represented by a dictionary.
     """
-    root = get_xml_tree('./airflight/data/RS_Via-3.xml')().getroot()
+    root = get_xml_tree(FILE_PATH).getroot()
     all_flights = []
 
     for Flights in root.xpath('//OnwardPricedItinerary/Flights'):
