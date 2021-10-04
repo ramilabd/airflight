@@ -1,3 +1,6 @@
+# -*- coding: utf8 -*-
+"""Tests the functions of web service."""
+
 from airflight.data_analysis import (
     get_all_flights,
     get_all_routes,
