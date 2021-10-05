@@ -40,6 +40,36 @@ def is_correct_sort_by_price(flights, reverse: bool):
     return is_correct_sort
 
 
+def is_correct_sorting_by_time(flights, reverse: bool):
+    """Check whether the sorting is correct by time.
+
+    Args:
+        flights (list): list of flights, each flight is represented
+            by a dictionary.
+        reverse (bool): determines the sorting order of the function being
+            checked, if False - ascending, if True - sorting in descending
+            order.
+
+    Returns:
+        bool: True if the sorting is correct, False if the sorting is incorrect
+    """
+    is_correct_sort = True
+    sort_flights_by_time = get_flights_sorted_time(flights, reverse=reverse)
+
+    index = 0
+    while is_correct_sort and index + 1 < len(sort_flights_by_time):
+        prev_time = sort_flights_by_time[index]['TotalTravelTime']
+        next_time = sort_flights_by_time[index + 1]['TotalTravelTime']
+        if reverse:
+            if prev_time < next_time:
+                is_correct_sort = False
+        elif prev_time > next_time:
+            is_correct_sort = False
+        index += 1
+
+    return is_correct_sort
+
+
 def test_get_all_flights(all_flights):
     """Test of the function get_all_flights.
 
@@ -63,28 +93,16 @@ def test_get_flights_sorted_price(all_flights):
     assert is_correct_sort_by_price(all_flights(), reverse=True)
 
 
-def test_get_flights_sorted_time():
-    def is_correct_sorting_by_time(reverse=False):
-        flights = get_all_flights()
-        sort_flights_by_time = get_flights_sorted_time(flights, reverse=reverse)
-        is_correct_sort = True
+def test_get_flights_sorted_time(all_flights):
+    """Test of the function get_flights_sorted_time.
 
-        i, j = 0, 1
-        while is_correct_sort and j < len(sort_flights_by_time):
-            prev_time = sort_flights_by_time[i]['TotalTravelTime']
-            next_time = sort_flights_by_time[j]['TotalTravelTime']
-            if reverse:
-                if prev_time < next_time:
-                    is_correct_sort = False
-            elif prev_time > next_time:
-                    is_correct_sort = False
-            i += 1
-            j += 1
-
-        return is_correct_sort
-
-    assert is_correct_sorting_by_time() == True
-    assert is_correct_sorting_by_time(reverse=True) == True
+    Args:
+        all_flights (fixture): a fixture function that returns a function that,
+            when called, returns a list of flights, where each flight is
+            represented by a dictionary
+    """
+    assert is_correct_sorting_by_time(all_flights(), reverse=False)
+    assert is_correct_sorting_by_time(all_flights(), reverse=True)
 
 
 def test_get_flights_filtered_direction():
