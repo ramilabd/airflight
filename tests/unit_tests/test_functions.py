@@ -99,32 +99,56 @@ def test_get_flights_sorted_time(all_flights):
     Args:
         all_flights (fixture): a fixture function that returns a function that,
             when called, returns a list of flights, where each flight is
-            represented by a dictionary
+            represented by a dictionary.
     """
     assert is_correct_sorting_by_time(all_flights(), reverse=False)
     assert is_correct_sorting_by_time(all_flights(), reverse=True)
 
 
-def test_get_flights_filtered_direction():
-    def is_correct_sorting_by_direction(source, destination):
-        flights = get_all_flights()
-        sorted_flights_with_source_destination = get_flights_filtered_direction(
-                source, destination)
-        sorted_flights_without_source_destination = []
+def is_correct_filtered_by_direction(all_flights, all_routes):
+    """Check whether filtering by source and destination.
 
-        for flight in flights:
-            if 'flight_2' not in flight:
-                if (source != flight['flight_1']['Source'] or
-                    destination != flight['flight_1']['Destination']):
-                    sorted_flights_without_source_destination.append(flight)
-            elif (source != flight['flight_1']['Source'] or
-                    destination != flight['flight_2']['Destination']):
-                    sorted_flights_without_source_destination.append(flight)
+    Args:
+        all_flights (fixture): fixture function that returns a function that,
+            when called, returns a list of flights, where each flight is
+            represented by a dictionary.
+        all_routes (fixture): fixture function that returns a function that,
+            when called, returns a list of routes, where each route is
+            represented by a dictionary {source, transfer, destination}.
 
-        return (len(sorted_flights_with_source_destination) +
-                len(sorted_flights_without_source_destination) == len(flights))
+    Returns:
+        bool: True if the filtering is correct, False if the filtering
+            is incorrect.
+    """
+    is_correct_filtered = True
+    for route in all_routes():
+        sort_flights_by_source_destination = get_flights_filtered_direction(
+            route['Source'],
+            route['Destination'],
+        )
+        count_routes = 0
+        for flight in all_flights:
+            if flight in sort_flights_by_source_destination:
+                count_routes += 1
+        is_correct_filtered = count_routes == len(
+            sort_flights_by_source_destination,
+        )
 
-    assert is_correct_sorting_by_direction('DXB', 'BKK') == True
+    return is_correct_filtered
+
+
+def test_get_flights_filtered_direction(all_flights, all_routes):
+    """Test of the function get_flights_filtered_direction.
+
+    Args:
+        all_flights (fixture): fixture function that returns a function that,
+            when called, returns a list of flights, where each flight is
+            represented by a dictionary.
+        all_routes (fixture): fixture function that returns a function that,
+            when called, returns a list of routes, where each route is
+            represented by a dictionary {source, transfer, destination}.
+    """
+    assert is_correct_filtered_by_direction(all_flights(), all_routes)
 
 
 def test_get_all_routes():
