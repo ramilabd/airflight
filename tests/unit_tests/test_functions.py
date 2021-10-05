@@ -1,11 +1,7 @@
 # -*- coding: utf8 -*-
 """Tests the functions of web service."""
 
-from airflight.data_analysis import (
-    get_all_flights,
-    get_all_routes,
-    get_optimal_route,
-)
+from airflight.data_analysis import get_all_flights, get_optimal_route
 from tests.unit_tests.checking_sorting import (
     is_correct_filtered_by_direction,
     is_correct_sort_by_price,
@@ -62,16 +58,26 @@ def test_get_flights_filtered_direction(all_flights, all_routes):
     assert is_correct_filtered_by_direction(all_flights(), all_routes)
 
 
-def test_get_all_routes():
-    all_flights = get_all_flights()
-    total_count_flights = len(all_flights)
-    all_routes = get_all_routes()
+def test_get_all_routes(all_flights, all_routes):
+    """Test of the function get_all_routes.
+
+    Args:
+        all_flights (fixture): fixture function that returns a function that,
+            when called, returns a list of flights, where each flight is
+            represented by a dictionary.
+        all_routes (fixture): fixture function that returns a function that,
+            when called, returns a list of routes, where each route is
+            represented by a dictionary {source, transfer, destination}.
+    """
+    total_count_flights = len(all_flights())
     count_each_route = {}
-    for route in all_routes:
-        direction = '{0}-{1}-{2}'.format(route['Source'],
-                                        route.get('Transfer', None),
-                                        route['Destination'])
-        if direction in count_each_route:
+    for route in all_routes():
+        direction = '{0}-{1}-{2}'.format(
+            route['Source'],
+            route.get('Transfer', None),
+            route['Destination'],
+        )
+        if count_each_route.get(direction):
             count_each_route[direction] += 1
         else:
             count_each_route[direction] = 1
