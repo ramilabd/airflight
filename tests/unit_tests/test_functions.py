@@ -12,7 +12,7 @@ from airflight.data_analysis import (
 
 
 def is_correct_sort_by_price(flights, reverse: bool):
-    """Check whether the sorting is correct.
+    """Check whether the sorting is correct by price.
 
     Args:
         flights (list): list of flights, each flight is represented
