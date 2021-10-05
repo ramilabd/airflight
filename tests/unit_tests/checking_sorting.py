@@ -83,18 +83,34 @@ def is_correct_filtered_by_direction(all_flights, all_routes):
         bool: True if the filtering is correct, False if the filtering
             is incorrect.
     """
-    is_correct_filtered = True
     for route in all_routes():
         sort_flights_by_source_destination = get_flights_filtered_direction(
             route['Source'],
             route['Destination'],
         )
-        count_routes = 0
-        for flight in all_flights:
-            if flight in sort_flights_by_source_destination:
-                count_routes += 1
-        is_correct_filtered = count_routes == len(
-            sort_flights_by_source_destination,
-        )
 
-    return is_correct_filtered
+        return count_flights(
+            all_flights,
+            sort_flights_by_source_destination,
+        ) == len(sort_flights_by_source_destination)
+
+
+def count_flights(first_sequence, second_sequence):
+    """Return the number of matches.
+
+    Returns the number of occurrences of elements from the first sequence
+    in the second sequence.
+
+    Args:
+        first_sequence (iterable): any sequence
+        second_sequence (iterable): any sequence
+
+    Returns:
+        number (int): count of elements
+    """
+    count_elem = 0
+    for elem in first_sequence:
+        if elem in second_sequence:
+            count_elem += 1
+
+    return count_elem
