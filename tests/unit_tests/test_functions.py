@@ -11,6 +11,35 @@ from airflight.data_analysis import (
 )
 
 
+def is_correct_sort_by_price(flights, reverse: bool):
+    """Check whether the sorting is correct.
+
+    Args:
+        flights (list): list of flights, each flight is represented
+            by a dictionary.
+        reverse (bool): determines the sorting order of the function being
+            checked, if False - ascending, if True - sorting in descending
+            order.
+
+    Returns:
+        bool: True if the sorting is correct, False if the sorting is incorrect
+    """
+    is_correct_sort = True
+    sort_flights_by_price = get_flights_sorted_price(flights, reverse=reverse)
+    current_price = float(sort_flights_by_price[0]['Price']['TicketPrice'])
+
+    for flight in sort_flights_by_price:
+        next_price = float(flight['Price']['TicketPrice'])
+        if reverse:
+            if current_price < next_price:
+                is_correct_sort = False
+        elif current_price > next_price:
+            is_correct_sort = False
+        current_price = next_price
+
+    return is_correct_sort
+
+
 def test_get_all_flights(all_flights):
     """Test of the function get_all_flights.
 
@@ -22,28 +51,16 @@ def test_get_all_flights(all_flights):
     assert len(all_flights()) == 200
 
 
-def test_get_flights_sorted_price():
-    def is_correct_sorting_by_price(reverse=False):
-        flights = get_all_flights()
-        sort_flights_by_price = get_flights_sorted_price(flights, reverse=reverse)
-        is_correct_sort = True
+def test_get_flights_sorted_price(all_flights):
+    """Test of the function get_flights_sorted_price.
 
-        i, j = 0, 1
-        while is_correct_sort and j < len(sort_flights_by_price):
-            prev_price = float(sort_flights_by_price[i]['Price']['TicketPrice'])
-            next_price = float(sort_flights_by_price[j]['Price']['TicketPrice'])
-            if reverse:
-                if prev_price < next_price:
-                    is_correct_sort = False
-            elif prev_price > next_price:
-                    is_correct_sort = False
-            i += 1
-            j += 1
-
-        return is_correct_sort
-
-    assert is_correct_sorting_by_price() == True
-    assert is_correct_sorting_by_price(reverse=True) == True
+    Args:
+        all_flights (fixture): a fixture function that returns a function that,
+            when called, returns a list of flights, where each flight is
+            represented by a dictionary
+    """
+    assert is_correct_sort_by_price(all_flights(), reverse=False)
+    assert is_correct_sort_by_price(all_flights(), reverse=True)
 
 
 def test_get_flights_sorted_time():
