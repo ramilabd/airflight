@@ -114,3 +114,62 @@ def count_flights(first_sequence, second_sequence):
             count_elem += 1
 
     return count_elem
+
+
+def get_median_time(flights):
+    """Return the median of the time list.
+
+    From the list of flights, where each flight is represented by a dictionary,
+    selects a time, creates a list of times and finds the median of this list.
+
+    Args:
+        flights (list): list all flights, each flight is represented
+            by a dictionary.
+
+    Returns:
+        int: median of list
+    """
+    times = []
+    for flight in flights:
+        times.append(flight['TotalTravelTime'])
+    sorted_times = sorted(times)
+
+    average_index = len(sorted_times) // 2
+    if len(sorted_times) % 2 == 0:
+        median = (
+            (sorted_times[average_index - 1] + sorted_times[average_index]) // 2
+        )
+    else:
+        median = sorted_times[average_index]
+
+    return median
+
+
+def get_median_price(flights):
+    """Return the median of the time price.
+
+    From the list of flights, where each flight is represented by a dictionary,
+    selects a price, creates a list of prices and finds the median of this list.
+
+    Args:
+        flights (list): list all flights, each flight is represented
+            by a dictionary.
+
+    Returns:
+        int: median of list
+    """
+    prices = []
+    for flight in flights:
+        prices.append(flight['Price']['TicketPrice'])
+    sort_prices = sorted(map(float, prices))
+
+    average_index = len(sort_prices) // 2
+    if len(sort_prices) % 2 == 0:
+        median = (
+            float(sort_prices[average_index - 1])
+            + float(sort_prices[average_index])
+        ) // 2
+    else:
+        median = float(sort_prices[average_index])
+
+    return median
