@@ -166,8 +166,9 @@ def get_median_price(flights):
     average_index = len(sort_prices) // 2
     if len(sort_prices) % 2 == 0:
         median = (
-            float(sort_prices[average_index - 1])
-            + float(sort_prices[average_index])
+            float(
+                sort_prices[average_index - 1],
+            ) + float(sort_prices[average_index])
         ) // 2
     else:
         median = float(sort_prices[average_index])
