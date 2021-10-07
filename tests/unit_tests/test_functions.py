@@ -1,8 +1,13 @@
 # -*- coding: utf8 -*-
 """Tests the functions of web service."""
 
-from airflight.data_analysis import get_all_flights, get_optimal_route
+from airflight.data_analysis import (
+    get_flights_filtered_direction,
+    get_optimal_route,
+)
 from tests.unit_tests.checking_sorting import (
+    get_median_price,
+    get_median_time,
     is_correct_filtered_by_direction,
     is_correct_sort_by_price,
     is_correct_sorting_by_time,
@@ -85,41 +90,30 @@ def test_get_all_routes(all_flights, all_routes):
     assert sum(count_each_route.values()) == total_count_flights
 
 
-def test_get_optimal_route():
-    all_flights = get_all_flights()
-    optimal_route = get_optimal_route('DXB', 'BKK')
+def test_get_optimal_route(all_routes):
+    """Test of the function get_optimal_route.
 
-    def get_median_time(flights):
-        times = []
-        for flight in flights:
-            times.append(flight['TotalTravelTime'])
+    Args:
+        all_routes (fixture): fixture function that returns a function that,
+            when called, returns a list of routes, where each route is
+            represented by a dictionary {source, transfer, destination}.
+    """
+    for route in all_routes():
+        filtered_flight_direction = get_flights_filtered_direction(
+            route.get('Source'),
+            route.get('Destination'),
+        )
+        optimal_route = get_optimal_route(
+            route.get('Source'),
+            route.get('Destination'),
+        )
 
-        sorted_times = sorted(times)
-        if len(sorted_times) % 2 == 0:
-            median = (sorted_times[(len(sorted_times) // 2) - 1] + sorted_times[len(sorted_times) // 2]) // 2
-        else:
-            median = sorted_times[len(sorted_times) // 2]
+        median_time_optimal_route = get_median_time(optimal_route)
+        median_price_optimal_route = get_median_price(optimal_route)
 
-        return median
-
-    def get_median_price(flights):
-        prices = []
-        for flight in flights:
-            prices.append(flight['Price']['TicketPrice'])
-
-        sorted_prices = sorted(list(map(float, prices)))
-        if len(sorted_prices) % 2 == 0:
-            median = (float(sorted_prices[(len(sorted_prices) // 2) - 1]) + float(sorted_prices[len(sorted_prices) // 2])) // 2
-        else:
-            median = float(sorted_prices[len(sorted_prices) // 2])
-
-        return median
-
-    median_time_all_flights = get_median_time(all_flights)
-    median_time_optimal_route = get_median_time(optimal_route)
-
-    median_price_all_flights = get_median_price(all_flights)
-    median_price_optimal_route = get_median_price(optimal_route)
-
-    assert median_time_optimal_route < median_time_all_flights
-    assert median_price_optimal_route < median_price_all_flights
+        assert median_time_optimal_route <= get_median_time(
+            filtered_flight_direction,
+        )
+        assert median_price_optimal_route <= get_median_price(
+            filtered_flight_direction,
+        )
