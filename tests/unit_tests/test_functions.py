@@ -22,7 +22,7 @@ def test_get_all_flights(all_flights):
             when called, returns a list of flights, where each flight is
             represented by a dictionary
     """
-    assert len(all_flights()) == 200
+    assert len(all_flights) == 200
 
 
 def test_get_flights_sorted_price(all_flights):
@@ -33,8 +33,8 @@ def test_get_flights_sorted_price(all_flights):
             when called, returns a list of flights, where each flight is
             represented by a dictionary
     """
-    assert is_correct_sort_by_price(all_flights(), reverse=False)
-    assert is_correct_sort_by_price(all_flights(), reverse=True)
+    assert is_correct_sort_by_price(all_flights, reverse=False)
+    assert is_correct_sort_by_price(all_flights, reverse=True)
 
 
 def test_get_flights_sorted_time(all_flights):
@@ -45,38 +45,40 @@ def test_get_flights_sorted_time(all_flights):
             when called, returns a list of flights, where each flight is
             represented by a dictionary.
     """
-    assert is_correct_sorting_by_time(all_flights(), reverse=False)
-    assert is_correct_sorting_by_time(all_flights(), reverse=True)
+    assert is_correct_sorting_by_time(all_flights, reverse=False)
+    assert is_correct_sorting_by_time(all_flights, reverse=True)
 
 
-def test_get_flights_filtered_direction(all_flights, all_routes):
+def test_get_flights_filtered_direction(all_flights, get_routes_in_parts):
     """Test of the function get_flights_filtered_direction.
 
     Args:
         all_flights (fixture): fixture function that returns a function that,
             when called, returns a list of flights, where each flight is
             represented by a dictionary.
-        all_routes (fixture): fixture function that returns a function that,
-            when called, returns a list of routes, where each route is
-            represented by a dictionary {source, transfer, destination}.
+        get_routes_in_parts (fixture): Returns each route from the list
+            separately. Each route is represented by a dictionary,
+            dictionary of the form:
+            {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
-    assert is_correct_filtered_by_direction(all_flights(), all_routes)
+    assert is_correct_filtered_by_direction(all_flights, get_routes_in_parts)
 
 
-def test_get_all_routes(all_flights, all_routes):
+def test_get_all_routes(all_flights, get_routes_in_parts):
     """Test of the function get_all_routes.
 
     Args:
         all_flights (fixture): fixture function that returns a function that,
             when called, returns a list of flights, where each flight is
             represented by a dictionary.
-        all_routes (fixture): fixture function that returns a function that,
-            when called, returns a list of routes, where each route is
-            represented by a dictionary {source, transfer, destination}.
+        get_routes_in_parts (fixture): Returns each route from the list
+            separately. Each route is represented by a dictionary,
+            dictionary of the form:
+            {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
-    total_count_flights = len(all_flights())
+    total_count_flights = len(all_flights)
     count_each_route = {}
-    for route in all_routes():
+    for route in get_routes_in_parts():
         direction = '{0}-{1}-{2}'.format(
             route['Source'],
             route.get('Transfer', None),
@@ -90,15 +92,17 @@ def test_get_all_routes(all_flights, all_routes):
     assert sum(count_each_route.values()) == total_count_flights
 
 
-def test_get_optimal_route(all_routes):
+def test_get_optimal_route(get_routes_in_parts):
     """Test of the function get_optimal_route.
 
     Args:
-        all_routes (fixture): fixture function that returns a function that,
-            when called, returns a list of routes, where each route is
+        get_routes_in_parts (fixture): Returns each route from the list
+            separately. Each route is represented by a dictionary,
+            dictionary of the form:
+            {'Source': ..., 'Transfer': ..., 'Destination': ...}.
             represented by a dictionary {source, transfer, destination}.
     """
-    for route in all_routes():
+    for route in get_routes_in_parts():
         filtered_flight_direction = get_flights_filtered_direction(
             route.get('Source'),
             route.get('Destination'),

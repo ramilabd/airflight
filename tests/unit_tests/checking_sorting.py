@@ -68,22 +68,23 @@ def is_correct_sorting_by_time(flights, reverse: bool):
     return is_correct_sort
 
 
-def is_correct_filtered_by_direction(all_flights, all_routes):
+def is_correct_filtered_by_direction(all_flights, get_routes_in_parts):
     """Check whether filtering by source and destination.
 
     Args:
         all_flights (fixture): fixture function that returns a function that,
             when called, returns a list of flights, where each flight is
             represented by a dictionary.
-        all_routes (fixture): fixture function that returns a function that,
-            when called, returns a list of routes, where each route is
-            represented by a dictionary {source, transfer, destination}.
+        get_routes_in_parts (fixture): Returns each route from the list
+            separately. Each route is represented by a dictionary,
+            dictionary of the form:
+            {'Source': ..., 'Transfer': ..., 'Destination': ...}.
 
     Returns:
         bool: True if the filtering is correct, False if the filtering
             is incorrect.
     """
-    for route in all_routes():
+    for route in get_routes_in_parts():
         sort_flights_by_source_destination = get_flights_filtered_direction(
             route['Source'],
             route['Destination'],

@@ -2,26 +2,52 @@
 """Definition of the fixtures of pytest."""
 
 import pytest
-
 from airflight.data_analysis import get_all_flights, get_all_routes
 
 
-@pytest.fixture
+def get_function(func):
+    """Return of function.
+
+    Decorator.
+    Wraps the accepted function in a wrapper and returns the wrapper.
+
+    Args:
+        func (function): wrapped function.
+
+    Returns:
+        func (function): wrapper with function.
+    """
+    def wrapper():
+        return func
+
+    return wrapper
+
+
+@pytest.fixture(scope='module', autouse=True)
 def all_flights():
-    all_flight = get_all_flights()
+    """Return list of flights.
 
-    def _all_flights():
-        return all_flight
+        Fixture function.
 
-    return _all_flights
+    Returns:
+        list: list: list of flights, each flight
+            is represented by a dictionary.
+    """
+    return get_all_flights()
 
 
-@pytest.fixture
-def all_routes():
-    all_routes = get_all_routes()
+@pytest.fixture(scope='module', autouse=True)
+@get_function
+def get_routes_in_parts():
+    """Return all possible routes.
 
-    def _all_routes():
-        for route in all_routes:
-            yield route
+        Fixture function.
+        Returns each route from the list separately.
+        Each route is represented by a dictionary, in which the following
+        are specified source, transfer and destination
 
-    return _all_routes
+    Yields:
+        dict: dictionary of the form
+            {'Source': ..., 'Transfer': ..., 'Destination': ...}
+    """
+    yield from get_all_routes()
