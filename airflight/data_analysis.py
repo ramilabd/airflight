@@ -153,12 +153,9 @@ def get_flights_filtered_direction(source, destination):
 
 
 def get_all_routes():
-    """Returns all possible routes.
-    With an indication of the place of departure, transfer and destination.
+    """Return all possible routes.
 
-    Args:
-        flights (list): list all flights,
-            each flight is represented by a dictionary.
+        With an indication of the place of departure, transfer and destination.
 
     Returns:
         list: list of routes (source, transfer, destination),
@@ -169,15 +166,20 @@ def get_all_routes():
 
     for flight in flights:
         source = flight['flight_1']['Source']
-        if 'flight_2' not in flight:
+
+        if flight.get('flight_2') is None:
             destination = flight['flight_1']['Destination']
             all_routes.append({'Source': source, 'Destination': destination})
         else:
-            transfer = flight['flight_1']['Destination']
             destination = flight['flight_2']['Destination']
-            all_routes.append({'Source': source, 'Transfer': transfer, 'Destination': destination})
+            all_routes.append({
+                'Source': source,
+                'Transfer': flight['flight_1']['Destination'],
+                'Destination': destination,
+            })
 
     return all_routes
+
 
 @lru_cache
 def get_optimal_route(source, destination, max_count_flight=10):
