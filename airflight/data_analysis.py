@@ -69,15 +69,17 @@ def add_total_travel_time(flight, str_time=False):
     Returns:
         dict: flight with added total time.
     """
-    departure_time = flight['flight_1']['DepartureTimeStamp']
+    departure_time = flight.get('flight_1').get('DepartureTimeStamp')
 
-    if 'flight_2' in flight:
-        arrival_time = flight['flight_2']['ArrivalTimeStamp']
+    if flight.get('flight_2'):
+        arrival_time = flight.get('flight_2').get('ArrivalTimeStamp')
     else:
-        arrival_time = flight['flight_1']['ArrivalTimeStamp']
+        arrival_time = flight.get('flight_1').get('ArrivalTimeStamp')
 
-    time_delta = (datetime.strptime(arrival_time, '%Y-%m-%dT%H%M') -
-        datetime.strptime(departure_time, '%Y-%m-%dT%H%M'))
+    time_delta = datetime.strptime(
+        arrival_time, '%Y-%m-%dT%H%M',
+    ) - datetime.strptime(departure_time, '%Y-%m-%dT%H%M')
+
     flight['TotalTravelTime'] = str(time_delta) if str_time else time_delta
 
     return flight
