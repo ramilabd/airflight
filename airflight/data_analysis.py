@@ -1,6 +1,11 @@
-from datetime import datetime
+# -*- coding: utf8 -*-
+"""Data analysis module."""
 
-from .parser_xml import FILE_PATH, get_xml_tree
+
+from datetime import datetime
+from functools import lru_cache
+
+from airflight.parser_xml import FILE_PATH, get_xml_tree
 
 
 def get_all_flights():
@@ -12,34 +17,42 @@ def get_all_flights():
     root = get_xml_tree(FILE_PATH).getroot()
     all_flights = []
 
-    for Flights in root.xpath('//OnwardPricedItinerary/Flights'):
-        routs = {}
-        order = 0
-
-        for Flight in Flights.iter('Flight'):
-            flight = {}
-            order += 1
-
-            for elem in Flight.iter('*'):
-                if elem.tag in {'Flight', 'WarningText', 'FareBasis',
-                            'NumberOfStops', 'Class', 'TicketType'
-                }:
-                    continue
-                tag = elem.tag
-                text = elem.text
-                flight[tag] = text
-
-            routs['flight_{}'.format(order)] = flight
-
-        currency = Flights.find('../../Pricing').attrib['currency']
-        price = Flights.find(
-            '../../Pricing/ServiceCharges[@ChargeType="TotalAmount"]'
-        ).text
-        routs['Price'] = dict(TicketPrice=price, Currency=currency)
-
-        all_flights.append(routs)
+    for flights in root.xpath('//OnwardPricedItinerary/Flights'):
+        all_flights.append(get_routes(flights))
 
     return list(map(add_total_travel_time, all_flights))
+
+
+def get_routes(flights):
+    """Return routes from flights.
+
+    Args:
+        flights (object of class 'lxml.etree._Element'): an object containing
+            a description of flights. every flight is a "Flight" tag.
+
+    Returns:
+        dict: "FLight" tags are generated in the routes dictionary.
+    """
+    routes = {}
+    order = 0
+
+    for flight in flights.iter('Flight'):
+        route = {}
+        order += 1
+
+        for elem in flight.iter('*'):
+            route[elem.tag] = elem.text
+
+        routes['flight_{0}'.format(order)] = route
+
+        routes['Price'] = {
+            'TicketPrice': flights.find(
+                '../../Pricing/ServiceCharges[@ChargeType="TotalAmount"]',
+            ).text,
+            'Currency': flights.find('../../Pricing').attrib['currency'],
+        }
+
+    return routes
 
 
 def add_total_travel_time(flight, str_time=False):
@@ -47,8 +60,11 @@ def add_total_travel_time(flight, str_time=False):
 
     Args:
         flight (dict): flight (route), is represented by a dictionary.
-        str_time (bool, optional): adds total time as a string or
+            str_time (bool, optional): adds total time as a string or
             object datetime. Defaults to False.
+        str_time (bool): object representation "time delta",
+            if True then as a string, if False then as a object
+            of type datetime.timedelta.
 
     Returns:
         dict: flight with added total time.
@@ -68,7 +84,7 @@ def add_total_travel_time(flight, str_time=False):
 
 
 def get_flights_sorted_price(flights, reverse=False):
-    """Returns a list of flights sorted by price.
+    """Return a list of flights sorted by price.
 
     Args:
         flights (list): list of flights, each flight is represented
@@ -87,7 +103,7 @@ def get_flights_sorted_price(flights, reverse=False):
 
 
 def get_flights_sorted_time(flights, reverse=False):
-    """Returns a list of flights sorted by time.
+    """Return a list of flights sorted by time.
 
     Args:
         flights ([type]): list of flights, each flight is represented
@@ -105,8 +121,9 @@ def get_flights_sorted_time(flights, reverse=False):
     )
 
 
+@lru_cache
 def get_flights_filtered_direction(source, destination):
-    """Returns a list of flights sorted by directions.
+    """Return a list of flights sorted by directions.
 
     Args:
         flights (dict): list of flights, each flight is represented
@@ -160,22 +177,17 @@ def get_all_routes():
 
     return all_routes
 
-
-def get_optimal_route(source, destination, flights_number=5):
-    """Returns optimal flight routes (by time and price).
+@lru_cache
+def get_optimal_route(source, destination, max_count_flight=10):
+    """Return optimal flight routes (by time and price).
 
     Args:
-        flights (list): list of flights, each flight is represented
-            by a dictionary.
         source (str): name of city (airport) of departure.
         destination (str): name of city (airport) of arrival.
-        number_flights (int, optional): the number of flights that
-            need to be returned. By default, 5.
 
     Returns:
         list: a list of optimal flights (by time and price).
     """
-    flights = get_all_flights()
     filtered_flight_direction = get_flights_filtered_direction(
         source, destination
     )
@@ -204,7 +216,8 @@ def get_optimal_route(source, destination, flights_number=5):
     sorted_flight_weights = sorted(flight_weights, key=lambda item: item[1])
 
     optimal_route = []
-    for index, _ in sorted_flight_weights[:flights_number]:
+
+    for index, _ in sorted_flight_weights[:max_count_flight]:
         optimal_route.append(filtered_flight_direction[index])
 
     return optimal_route
