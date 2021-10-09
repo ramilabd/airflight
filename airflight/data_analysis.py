@@ -128,8 +128,6 @@ def get_flights_filtered_direction(source, destination):
     """Return a list of flights sorted by directions.
 
     Args:
-        flights (dict): list of flights, each flight is represented
-            by a dictionary.
         source (str): name of city (airport) of departure.
         destination (str): name of city (airport) of arrival.
 
@@ -137,19 +135,21 @@ def get_flights_filtered_direction(source, destination):
         list: a list of flights sorted by destination.
     """
     flights = get_all_flights()
-    sorted_flights = []
+    filtered_flights = []
 
     for flight in flights:
-        if 'flight_2' not in flight:
-            if (flight['flight_1']['Source'] == source and
-                    flight['flight_1']['Destination'] == destination):
-                sorted_flights.append(flight)
-        else:
-            if (flight['flight_1']['Source'] == source and
-                    flight['flight_2']['Destination'] == destination):
-                sorted_flights.append(flight)
+        source_in_flight = flight.get('flight_1').get('Source')
 
-    return sorted_flights
+        if flight.get('flight_2'):
+            second_flight = flight.get('flight_2')
+        else:
+            second_flight = flight.get('flight_1')
+
+        if source_in_flight == source:
+            if second_flight.get('Destination') == destination:
+                filtered_flights.append(flight)
+
+    return filtered_flights
 
 
 def get_all_routes():
