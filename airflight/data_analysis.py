@@ -182,49 +182,58 @@ def get_all_routes():
 
 
 @lru_cache
-def get_optimal_route(source, destination, max_count_flight=10):
-    """Return optimal flight routes (by time and price).
+def get_optimal_route(source, destination, count=10):
+    """Return optimal flight routes by time and price.
 
     Args:
         source (str): name of city (airport) of departure.
         destination (str): name of city (airport) of arrival.
+        count (int, optional): the number of flights to be returned.
 
     Returns:
-        list: a list of optimal flights (by time and price).
+        list: a list of optimal flights by time and price.
     """
-    filtered_flight_direction = get_flights_filtered_direction(
-        source, destination
-    )
+    sort_flight_time = get_flights_sorted_time(get_flights_filtered_direction(
+        source,
+        destination,
+    ))
+    sort_flight_price = get_flights_sorted_price(get_flights_filtered_direction(
+        source,
+        destination,
+    ))
 
-    mark = 1
-    for flight in filtered_flight_direction:
-        flight['mark'] = mark
-        mark += 1
-
-    sorted_flight_time = get_flights_sorted_time(filtered_flight_direction)
-    sorted_flight_price = get_flights_sorted_price(filtered_flight_direction)
-
-    flight_weights = []
-    for flight in filtered_flight_direction:
-        mark = flight['mark']
-        index = filtered_flight_direction.index(flight)
-        for flight_in_time in sorted_flight_time:
-            if mark == flight_in_time['mark']:
-                index_in_time = sorted_flight_time.index(flight_in_time)
-            for flight_in_price in sorted_flight_price:
-                if mark == flight_in_price['mark']:
-                    index_in_price = sorted_flight_price.index(flight_in_price)
-        flight_weight = index, index_in_time + index_in_price
-        flight_weights.append(flight_weight)
-
-    sorted_flight_weights = sorted(flight_weights, key=lambda item: item[1])
+    flight_weights = get_flight_weights(sort_flight_time, sort_flight_price)
 
     optimal_route = []
-
-    for index, _ in sorted_flight_weights[:max_count_flight]:
-        optimal_route.append(filtered_flight_direction[index])
+    for flight, _ in sorted(flight_weights, key=lambda pair: pair[1])[:count]:
+        optimal_route.append(flight)
 
     return optimal_route
+
+
+def get_flight_weights(sort_flight_time, sort_flight_price):
+    """Calculate the sum of indexes of the same object in two lists.
+
+    Args:
+        sort_flight_time (list): list of flights sorted by time.
+        sort_flight_price (list): list of flights sorted by price.
+
+    Returns:
+        list: a list of tuples, where each tuple is a pair -
+            dictionary (flight) and the sum of the indexes of this
+            dictionary in from two lists.
+    """
+    flight_weights = []
+
+    for index_in_time, flight_in_time in enumerate(sort_flight_time):
+        for index_in_price, flight_in_price in enumerate(sort_flight_price):
+            if flight_in_time == flight_in_price:
+                flight_weights.append((
+                    flight_in_price,
+                    index_in_time + index_in_price,
+                ))
+
+    return flight_weights
 
 
 def formatting_time(flights):
