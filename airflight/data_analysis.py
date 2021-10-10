@@ -43,7 +43,7 @@ def get_route(flights):
         for elem in flight.iter('*'):
             flight_direction[elem.tag] = elem.text
 
-        route['flight_{0}'.format(order)] = flight_direction
+        route['flight{0}'.format(order)] = flight_direction
 
         route['Price'] = {
             'TicketPrice': flights.find(
@@ -108,12 +108,12 @@ def get_flights_filtered_direction(source, destination):
     filtered_flights = []
 
     for flight in flights:
-        source_in_flight = flight.get('flight_1').get('Source')
+        source_in_flight = flight.get('flight1').get('Source')
 
-        if flight.get('flight_2'):
-            second_flight = flight.get('flight_2')
+        if flight.get('flight2'):
+            second_flight = flight.get('flight2')
         else:
-            second_flight = flight.get('flight_1')
+            second_flight = flight.get('flight1')
 
         if source_in_flight == source:
             if second_flight.get('Destination') == destination:
@@ -135,10 +135,10 @@ def get_all_routes():
     all_routes = []
 
     for flight in flights:
-        source = flight.get('flight_1').get('Source')
-        destination = flight.get('flight_1').get('Destination')
+        source = flight.get('flight1').get('Source')
+        destination = flight.get('flight1').get('Destination')
 
-        if flight.get('flight_2') is None:
+        if flight.get('flight2') is None:
             all_routes.append({
                 'Source': source,
                 'Destination': destination,
@@ -147,7 +147,7 @@ def get_all_routes():
             all_routes.append({
                 'Source': source,
                 'Transfer': destination,
-                'Destination': flight.get('flight_2').get('Destination'),
+                'Destination': flight.get('flight2').get('Destination'),
             })
 
     return all_routes
