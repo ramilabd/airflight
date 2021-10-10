@@ -11,7 +11,7 @@ test:
 	poetry run pytest -v
 
 test-coverage:
-	poetry run pytest --cov=airflight tests/
+	poetry run pytest --cov=airflight --cov-report xml tests/
 
 selfcheck:
 	poetry check
