@@ -135,17 +135,19 @@ def get_all_routes():
     all_routes = []
 
     for flight in flights:
-        source = flight['flight_1']['Source']
+        source = flight.get('flight_1').get('Source')
+        destination = flight.get('flight_1').get('Destination')
 
         if flight.get('flight_2') is None:
-            destination = flight['flight_1']['Destination']
-            all_routes.append({'Source': source, 'Destination': destination})
-        else:
-            destination = flight['flight_2']['Destination']
             all_routes.append({
                 'Source': source,
-                'Transfer': flight['flight_1']['Destination'],
                 'Destination': destination,
+            })
+        else:
+            all_routes.append({
+                'Source': source,
+                'Transfer': destination,
+                'Destination': flight.get('flight_2').get('Destination'),
             })
 
     return all_routes
