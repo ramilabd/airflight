@@ -687,7 +687,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "459f87d2604bfe8142ab08585d934ee835ad9cb2fae992ee85f02fbc917abbf1"
+content-hash = "f1ca6a1b4c313b5a44e939bbb8495f54b5960d1aa4681c0fe9dcc9ce4f004c56"
 
 [metadata.files]
 add-trailing-comma = [
