@@ -237,6 +237,18 @@ def get_flight_weights(sort_flight_time, sort_flight_price):
 
 
 def formatting_time(flights):
+    """Change the representation of time in flight.
+
+    Args:
+        flights (list): list of flights, each flight is represented
+            by a dictionary. Time in the dictionary is represented by an
+                object "datetime".
+
+    Returns:
+        list: list of flights, each flight is represented
+            by a dictionary. Time in the dictionary is represented by string
+                in format '%Y-%m-%dT%H%M'.
+    """
     for flight in flights:
         flight['TotalTravelTime'] = str(flight['TotalTravelTime'])
 
