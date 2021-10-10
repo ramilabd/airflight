@@ -18,41 +18,41 @@ def get_all_flights():
     all_flights = []
 
     for flights in root.xpath('//OnwardPricedItinerary/Flights'):
-        all_flights.append(get_routes(flights))
+        all_flights.append(get_route(flights))
 
     return list(map(add_total_travel_time, all_flights))
 
 
-def get_routes(flights):
-    """Return routes from flights.
+def get_route(flights):
+    """Return route from flights.
 
     Args:
         flights (object of class 'lxml.etree._Element'): an object containing
             a description of flights. every flight is a "Flight" tag.
 
     Returns:
-        dict: "FLight" tags are generated in the routes dictionary.
+        dict: "FLight" tags are generated in the route dictionary.
     """
-    routes = {}
+    route = {}
     order = 0
 
     for flight in flights.iter('Flight'):
-        route = {}
+        flight_direction = {}
         order += 1
 
         for elem in flight.iter('*'):
-            route[elem.tag] = elem.text
+            flight_direction[elem.tag] = elem.text
 
-        routes['flight_{0}'.format(order)] = route
+        route['flight_{0}'.format(order)] = flight_direction
 
-        routes['Price'] = {
+        route['Price'] = {
             'TicketPrice': flights.find(
                 '../../Pricing/ServiceCharges[@ChargeType="TotalAmount"]',
             ).text,
             'Currency': flights.find('../../Pricing').attrib['currency'],
         }
 
-    return routes
+    return route
 
 
 def add_total_travel_time(flight, str_time=False):
