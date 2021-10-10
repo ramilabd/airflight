@@ -1,23 +1,28 @@
 language: python
 python:
-  - "3.8" # current default Python on Travis CI
+  - "3.8"
 
-  # command to install poetry
 before_install:
   - python3 -m pip install poetry
 
-  # command to install dependencies
 install:
   - make install
 
-  # command to run tests
+env:
+  global:
+    - CC_TEST_REPORTER_ID=5d718a2462d7e3cc9f3aef1f5b1be5ab0e259a79f50bd093642f4b29a567c925
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 script:
   - make lint
-  - make test
+  - make test-coverage
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 notifications:
-  email:
-    recipients:
-      - ramsmart@mail.ru
-    on_success: never
-    on_failure: always
+  email: false
