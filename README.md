@@ -6,6 +6,8 @@
 [![Build Status](https://app.travis-ci.com/ramilabd/aviasales-assisted_team_solution.svg?branch=main)](https://app.travis-ci.com/ramilabd/airflight)
 [![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
 [![wakatime](https://wakatime.com/badge/user/1385d92c-8dfb-4f90-aece-78701e17aaa6/project/47fa1668-7cd4-4e72-9680-11f5099cb2f6.svg)](https://wakatime.com/badge/user/1385d92c-8dfb-4f90-aece-78701e17aaa6/project/47fa1668-7cd4-4e72-9680-11f5099cb2f6)
+[![Updates](https://pyup.io/repos/github/ramilabd/airflight/shield.svg)](https://pyup.io/repos/github/ramilabd/airflight/)
+[![Python 3](https://pyup.io/repos/github/ramilabd/airflight/python-3-shield.svg)](https://pyup.io/repos/github/ramilabd/airflight/)
 
 ## Описание
 
