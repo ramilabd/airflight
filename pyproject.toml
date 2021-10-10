@@ -1,23 +1,23 @@
 [tool.poetry]
-name = "choose_flight"
-version = "0.1.0"
-description = ""
 authors = ["ramilabd <ramsmart@mail.ru>"]
+description = ""
+name = "airflight"
+version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-lxml = "^4.6.3"
 Flask = "^2.0.1"
+lxml = "^4.6.3"
+python = "^3.8"
 
 [tool.poetry.dev-dependencies]
-wemake-python-styleguide = "^0.15.3"
-pytest = "^6.2.4"
-isort = "^5.9.3"
-autopep8 = "^1.5.7"
 add-trailing-comma = "^2.1.0"
-pytest-cov = "^3.0.0"
+autopep8 = "^1.5.7"
 coverage = "^6.0.1"
+isort = "^5.9.3"
+pytest = "^6.2.4"
+pytest-cov = "^3.0.0"
+wemake-python-styleguide = "^0.15.3"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
