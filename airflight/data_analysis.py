@@ -41,7 +41,10 @@ def get_route(flights):
         order += 1
 
         for elem in flight.iter('*'):
-            flight_direction[elem.tag] = elem.text
+            if elem.tag == 'Flight':
+                continue
+            if elem.text is not None:
+                flight_direction[elem.tag] = elem.text.strip()
 
         route['flight{0}'.format(order)] = flight_direction
 
