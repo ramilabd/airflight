@@ -2,7 +2,7 @@
 """Flask application module."""
 
 from airflight.auxiliary_func import formatting_time
-from data_analysis import (
+from airflight.data_analysis import (
     get_all_flights,
     get_all_routes,
     get_flights_filtered_direction,
