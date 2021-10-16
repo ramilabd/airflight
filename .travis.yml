@@ -10,7 +10,7 @@ install:
 
 env:
   global:
-    - CC_TEST_REPORTER_ID=5d718a2462d7e3cc9f3aef1f5b1be5ab0e259a79f50bd093642f4b29a567c925
+    - CC_TEST_REPORTER_ID=dbd2a069049e1d1a6f7c8f7a82c7895924a148021de5f0cfb735611b2bfb5219
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
