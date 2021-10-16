@@ -1,7 +1,7 @@
 # Решение [тестового задания](https://github.com/KosyanMedia/test-tasks/tree/master/assisted_team) в команду ассистеда компании [Aviasales](https://www.aviasales.ru/?origin=REN)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/d1b95433d2a787079231/maintainability)](https://codeclimate.com/github/ramilabd/airflight/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/d1b95433d2a787079231/test_coverage)](https://codeclimate.com/github/ramilabd/airflight/test_coverage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b3bfee84eada6b695083/test_coverage)](https://codeclimate.com/github/ramilabd/airflight/test_coverage)
 ![TestLint](https://github.com/ramilabd/airflight/actions/workflows/python-ci.yml/badge.svg)
 [![Build Status](https://app.travis-ci.com/ramilabd/aviasales-assisted_team_solution.svg?branch=main)](https://app.travis-ci.com/ramilabd/airflight)
 [![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
