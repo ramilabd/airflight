@@ -17,6 +17,7 @@ isort = "^5.9.3"
 pytest = "^6.2.4"
 pytest-cov = "^3.0.0"
 wemake-python-styleguide = "^0.15.3"
+jsonschema = "^4.1.0"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
