@@ -3,6 +3,8 @@
 
 import pytest
 from airflight.data_analysis import get_all_flights, get_all_routes
+from werkzeug.test import Client
+from airflight.app import app
 
 
 def get_function(func):
@@ -51,3 +53,10 @@ def get_routes_in_parts():
             {'Source': ..., 'Transfer': ..., 'Destination': ...}
     """
     yield from get_all_routes()
+
+
+@pytest.fixture(scope='session')
+def web_service():
+    """Create and return web application for testing.
+    """
+    return Client(app)
