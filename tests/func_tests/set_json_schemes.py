@@ -4,7 +4,7 @@
 Used for testing (validation) json returned by a web service.
 """
 
-flight1_flight2 = {
+flight1_flight2_scheme = {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
@@ -121,7 +121,7 @@ flight1_flight2 = {
     "required": ["Price", "TotalTravelTime", "flight1", "flight2"],
 }
 
-flight1 = {
+flight1_scheme = {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
