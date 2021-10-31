@@ -16,9 +16,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
-@app.route('/airflight')
+@app.route('/main_page')
 def index():
-    """Route handler '/' or 'airflight'.
+    """Route handler '/' and '/main_page'.
 
     Returns:
         html: main page of web service.
@@ -26,7 +26,7 @@ def index():
     return 'Hello, this main page!'
 
 
-@app.route('/airflight/flights')
+@app.route('/airflights/flights')
 def receive_all_flights():
     """Route handler '/flights'.
 
@@ -39,7 +39,7 @@ def receive_all_flights():
     return jsonify(formatting_time(get_all_flights()))
 
 
-@app.route('/airflight/flights/sorted_by_direction/<source>/<destination>')
+@app.route('/airflights/flights/sorted_by_direction/<source>/<destination>')
 def receive_sorted_flights_by_direction(source, destination):
     """Route handler '/sorted_by_direction'.
 
@@ -60,7 +60,7 @@ def receive_sorted_flights_by_direction(source, destination):
         )))
 
 
-@app.route('/airflight/flights/sorted_by_price/<source>/<destination>')
+@app.route('/airflights/flights/sorted_by_price/<source>/<destination>')
 def receive_flights_sorted_price(source, destination):
     """Route handler '/sorted_by_price'.
 
@@ -82,7 +82,7 @@ def receive_flights_sorted_price(source, destination):
         ))))
 
 
-@app.route('/airflight/flights/sorted_by_time/<source>/<destination>')
+@app.route('/airflights/flights/sorted_by_time/<source>/<destination>')
 def receive_flight_sorted_time(source, destination):
     """Route handler '/sorted_by_time'.
 
@@ -104,7 +104,7 @@ def receive_flight_sorted_time(source, destination):
         ))))
 
 
-@app.route('/airflight/flights/optimal_routes/<source>/<destination>')
+@app.route('/airflights/flights/optimal_routes/<source>/<destination>')
 def receive_get_optimal_route(source, destination):
     """Route handler '/optimal_routes'.
 
@@ -121,7 +121,7 @@ def receive_get_optimal_route(source, destination):
     return jsonify(formatting_time(get_optimal_route(source, destination)))
 
 
-@app.route('/airflight/flights/routes')
+@app.route('/airflights/flights/routes')
 def receive_get_all_route():
     """Route handler '/routes'.
 
