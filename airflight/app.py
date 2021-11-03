@@ -39,7 +39,7 @@ def receive_all_flights():
     return jsonify(formatting_time(get_all_flights()))
 
 
-@app.route('/airflights/flights/sorted_by_direction/<source>/<destination>', methods=['POST'])
+@app.route('/airflights/flights/sorted_by_direction/<source>/<destination>')
 def receive_sorted_flights_by_direction(source, destination):
     """Route handler '/sorted_by_direction'.
 
