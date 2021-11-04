@@ -131,8 +131,8 @@ def get_all_routes():
         With an indication of the place of departure, transfer and destination.
 
     Returns:
-        list: list of routes (source, transfer, destination),
-            each route is represented by a dictionary.
+        list: list of routes, each route is represented by a dictionary
+            of the form {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
     flights = get_all_flights()
     all_routes = []
