@@ -35,7 +35,7 @@ def test_validate_response_all_flights(test_client):
     assert is_corresponds_to_jsonscheme(response_json)
 
 
-def test_validate_sort_flights_by_direction(test_client, get_routes_in_parts):
+def test_validate_response_json(test_client, get_routes_in_parts):
     """Validating the function response.
 
         Validating the function "receive_sorted_flights_by_direction" response
@@ -49,18 +49,25 @@ def test_validate_sort_flights_by_direction(test_client, get_routes_in_parts):
             dictionary of the form:
             {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
-    for route in get_routes_in_parts():
-        response_json = test_client.get(
-            '/airflights/flights/sorted_by_direction/<source>/<destination>',
-            data=json.dumps({
-                'source': route.get('Source'),
-                'destination': route.get('Destination'),
-            }),
-            content_type='application/json',
-        )
-        response_json = json.loads(response_json.get_data(as_text=True))
+    urls = [
+        '/airflights/flights/sorted_by_direction/<source>/<destination>',
+        '/airflights/flights/sorted_by_price/<source>/<destination>',
+        '/airflights/flights/sorted_by_time/<source>/<destination>',
+        '/airflights/flights/optimal_routes/<source>/<destination>',
+    ]
+    for url in urls:
+        for route in get_routes_in_parts():
+            response_json = test_client.get(
+                url,
+                data=json.dumps({
+                    'source': route.get('Source'),
+                    'destination': route.get('Destination'),
+                }),
+                content_type='application/json',
+            )
+            response_json = json.loads(response_json.get_data(as_text=True))
 
-        assert is_corresponds_to_jsonscheme(response_json)
+            assert is_corresponds_to_jsonscheme(response_json)
 
 
 def is_corresponds_to_jsonscheme(response_json):
