@@ -121,15 +121,16 @@ def receive_get_optimal_route(source, destination):
     return jsonify(formatting_time(get_optimal_route(source, destination)))
 
 
-@app.route('/airflights/flights/routes')
+@app.route('/airflights/flights/all_routes')
 def receive_get_all_route():
-    """Route handler '/routes'.
+    """Route handler '/all_routes'.
 
     Calls the funcrion 'get_all_routes', formats her response in 'json',
     puts the time (datetime) in the string.
 
     Returns:
-        json: list of routes.
+        json: list of routes, each route is represented by a dictionary
+            of the form {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
     return jsonify(get_all_routes())
 
