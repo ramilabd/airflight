@@ -4,7 +4,6 @@
 import pytest
 from airflight.app import app
 from airflight.data_analysis import get_all_flights, get_all_routes
-from werkzeug.test import Client
 
 
 def get_function(func):
@@ -55,11 +54,15 @@ def get_routes_in_parts():
     yield from get_all_routes()
 
 
-@pytest.fixture(scope='session')
-def web_service():
-    """Create and return web application for testing.
+@pytest.fixture()
+def test_client():
+    """Create a test client for application and return this.
 
-    Returns:
-        werkzeug.test.Client: application Flask for functionaly testing.
+    Yields:
+        class flask.testing.FlaskClient: application Flask for
+            functionaly testing.
     """
-    return Client(app)
+    app.testing = True
+    with app.test_client() as client:
+        with app.app_context():
+            yield client
