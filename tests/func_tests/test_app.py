@@ -1,65 +1,89 @@
 # -*- coding: utf8 -*-
 """Functional tests of the application."""
 
+import json
 
 import jsonschema
-from tests.conftest import web_service
-from tests.func_tests import set_json_schemes
+from tests.func_tests.set_json_schemes import (
+    flight1_flight2_scheme,
+    flight1_scheme,
+)
 
 
-def test_app_airflight(web_service):
-    response1 = web_service.get('/')
-    response2 = web_service.get('/airflight')
+def test_app_airflights(test_client):
+    """Check the availability of the web application.
 
-    assert response1.status_code == 200
-    assert response2.status_code == 200
+    Args:
+        test_client (fixture class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+    """
+    assert test_client.get('/main_page').status_code == 200
 
 
-def test_validate_response_all_flight(web_service):
-    response = web_service.get('/airflight/flights')
-    response_json = response.get_json()
+def test_validate_response_all_flights(test_client):
+    """Validating the function response.
 
+        Validating the function "receive_all_flights" response for compliance
+        with the specified json schema.
+
+    Args:
+        test_client (fixture: class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+    """
+    response_json = test_client.get('/airflights/flights').get_json()
+
+    assert is_corresponds_to_jsonscheme(response_json)
+
+
+def test_validate_sort_flights_by_direction(test_client, get_routes_in_parts):
+    """Validating the function response.
+
+        Validating the function "receive_sorted_flights_by_direction" response
+        for compliance with the specified json schema.
+
+    Args:
+        test_client (fixture: class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+        get_routes_in_parts (fixture): Returns each route from the list
+            separately. Each route is represented by a dictionary,
+            dictionary of the form:
+            {'Source': ..., 'Transfer': ..., 'Destination': ...}.
+    """
+    for route in get_routes_in_parts():
+        response_json = test_client.get(
+            '/airflights/flights/sorted_by_direction/<source>/<destination>',
+            data=json.dumps({
+                'source': route.get('Source'),
+                'destination': route.get('Destination'),
+            }),
+            content_type='application/json',
+        )
+        response_json = json.loads(response_json.get_data(as_text=True))
+
+        assert is_corresponds_to_jsonscheme(response_json)
+
+
+def is_corresponds_to_jsonscheme(response_json):
+    """Validate to the specified scheme.
+
+    Args:
+        response_json (json): response of the function.
+
+    Returns:
+        bool: True - corresponds to the specified scheme,
+            False - does not match the specified scheme.
+    """
     is_json_valide = True
+
     for flight in response_json:
         if flight.get('flight2') is None:
-            try:
-                jsonschema.validate(flight, set_json_schemes.flight1)
-            except jsonschema.exceptions.ValidationError:
-                is_json_valide = False
-            except jsonschema.exceptions.SchemaError:
-                is_json_valide = False
+            scheme = flight1_scheme
         else:
-            try:
-                jsonschema.validate(flight, set_json_schemes.flight1_flight2)
-            except jsonschema.exceptions.ValidationError:
-                is_json_valide = False
-            except jsonschema.exceptions.SchemaError:
-                is_json_valide = True
+            scheme = flight1_flight2_scheme
 
-    assert is_json_valide
+        try:
+            jsonschema.validate(flight, scheme)
+        except jsonschema.exceptions.ValidationError:
+            is_json_valide = False
 
-
-def test_validate_sorted_flights_by_direction(web_service):
-    response = web_service.get(
-        '/airflight/flights/sorted_by_direction/<source>/<destination>',
-    )
-    response_json = response.get_json()
-
-    is_json_valide = True
-    for flight in response_json:
-        if flight.get('flight2') is None:
-            try:
-                jsonschema.validate(flight, set_json_schemes.flight1)
-            except jsonschema.exceptions.ValidationError:
-                is_json_valide = False
-            except jsonschema.exceptions.SchemaError:
-                is_json_valide = False
-        else:
-            try:
-                jsonschema.validate(flight, set_json_schemes.flight1_flight2)
-            except jsonschema.exceptions.ValidationError:
-                is_json_valide = False
-            except jsonschema.exceptions.SchemaError:
-                is_json_valide = True
-
-    assert is_json_valide
+    return is_json_valide
