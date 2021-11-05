@@ -1,8 +1,6 @@
 # -*- coding: utf8 -*-
 """Functional tests of the application."""
 
-import json
-
 import jsonschema
 from tests.func_tests.set_json_schemes import (
     flight1_flight2_scheme,
@@ -61,13 +59,11 @@ def test_validate_response_json(test_client, get_routes_in_parts):
         for route in get_routes_in_parts():
             response_json = test_client.get(
                 url,
-                data=json.dumps({
+                data={
                     'source': route.get('Source'),
                     'destination': route.get('Destination'),
-                }),
-                content_type='application/json',
-            )
-            response_json = json.loads(response_json.get_data(as_text=True))
+                },
+            ).get_json(force=True)
 
             assert is_corresponds_to_jsonscheme(response_json)
 
