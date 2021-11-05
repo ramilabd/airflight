@@ -7,6 +7,8 @@ import jsonschema
 from tests.func_tests.set_json_schemes import (
     flight1_flight2_scheme,
     flight1_scheme,
+    min_route_scheme,
+    route_scheme,
 )
 
 
@@ -68,6 +70,35 @@ def test_validate_response_json(test_client, get_routes_in_parts):
             response_json = json.loads(response_json.get_data(as_text=True))
 
             assert is_corresponds_to_jsonscheme(response_json)
+
+
+def test_validate_response_get_all_route(test_client):
+    """Validating the function response.
+
+        Validating the function "receive_get_all_route" response
+        for compliance with the specified json schema.
+
+    Args:
+        test_client (fixture: class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+    """
+    response_json = test_client.get(
+        '/airflights/flights/all_routes',
+    ).get_json(force=True)
+
+    is_json_valide = True
+    for route in response_json:
+        if 'Transfer' in route:
+            scheme = route_scheme
+        else:
+            scheme = min_route_scheme
+
+        try:
+            jsonschema.validate(route, scheme)
+        except jsonschema.exceptions.ValidationError:
+            is_json_valide = False
+
+        assert is_json_valide
 
 
 def is_corresponds_to_jsonscheme(response_json):
