@@ -1,4 +1,4 @@
-# Решение [тестового задания](https://github.com/KosyanMedia/test-tasks/tree/master/assisted_team) в команду ассистеда компании [Aviasales](https://www.aviasales.ru/?origin=REN)
+# Airflights
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/b3bfee84eada6b695083/maintainability)](https://codeclimate.com/github/ramilabd/airflight/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b3bfee84eada6b695083/test_coverage)](https://codeclimate.com/github/ramilabd/airflight/test_coverage)
@@ -9,7 +9,19 @@
 [![Updates](https://pyup.io/repos/github/ramilabd/airflight/shield.svg)](https://pyup.io/repos/github/ramilabd/airflight/)
 [![Python 3](https://pyup.io/repos/github/ramilabd/airflight/python-3-shield.svg)](https://pyup.io/repos/github/ramilabd/airflight/)
 
-## Описание
+# Documentation
+
+# Examples
+
+# Contributing
+
+# License
+
+# Gratitude
+
+# Description of the test task
+
+Данный проект является вариантом решения [тестового задания](https://github.com/KosyanMedia/test-tasks/tree/master/assisted_team) в команду ассистеда компании [Aviasales](https://www.aviasales.ru/?origin=REN)
 
 В папке два XML – это ответы на поисковые запросы, сделанные к одному из наших партнёров. В ответах лежат варианты перелётов (тег `Flights`) со всей необходимой информацией, чтобы отобразить билет на Aviasales.
 
