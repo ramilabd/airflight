@@ -190,3 +190,43 @@ flight1_scheme = {
     },
     "required": ["Price", "TotalTravelTime", "flight1"],
 }
+
+
+route_scheme = {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "Destination": {
+            "type": "string",
+        },
+        "Source": {
+            "type": "string",
+        },
+        "Transfer": {
+            "type": "string",
+        },
+    },
+    "required": [
+        "Destination",
+        "Source",
+        "Transfer",
+    ],
+}
+
+
+min_route_scheme = {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "Destination": {
+            "type": "string",
+        },
+        "Source": {
+            "type": "string",
+        },
+    },
+    "required": [
+        "Destination",
+        "Source",
+    ],
+}
