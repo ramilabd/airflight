@@ -5,7 +5,7 @@
 ![TestLint](https://github.com/ramilabd/airflights/actions/workflows/python-ci.yml/badge.svg)
 [![Build Status](https://app.travis-ci.com/ramilabd/airflights.svg?branch=develop)](https://app.travis-ci.com/ramilabd/airflights)
 [![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
-[![wakatime](https://wakatime.com/badge/user/1385d92c-8dfb-4f90-aece-78701e17aaa6/project/9c3ca924-43fb-4414-94f7-62fc4c3c4d8d.svg)](https://wakatime.com/badge/user/1385d92c-8dfb-4f90-aece-78701e17aaa6/project/9c3ca924-43fb-4414-94f7-62fc4c3c4d8d)
+[![wakatime](https://wakatime.com/badge/github/ramilabd/airflights.svg)](https://wakatime.com/badge/github/ramilabd/airflights)
 [![Updates](https://pyup.io/repos/github/ramilabd/airflights/shield.svg)](https://pyup.io/repos/github/ramilabd/airflights/)
 [![Python 3](https://pyup.io/repos/github/ramilabd/airflights/python-3-shield.svg)](https://pyup.io/repos/github/ramilabd/airflights/)
 
