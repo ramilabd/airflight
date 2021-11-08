@@ -8,6 +8,7 @@ version = "0.1.0"
 Flask = "^2.0.1"
 lxml = "^4.6.3"
 python = "^3.8"
+gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 add-trailing-comma = "^2.1.0"
