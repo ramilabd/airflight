@@ -1,24 +1,24 @@
 [tool.poetry]
 authors = ["ramilabd <ramsmart@mail.ru>"]
 description = ""
-name = "airflight"
-version = "0.1.0"
+name = "airflights"
+version = "1.0.0"
 
 [tool.poetry.dependencies]
 Flask = "^2.0.1"
+gunicorn = "^20.1.0"
 lxml = "^4.6.3"
 python = "^3.8"
-gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 add-trailing-comma = "^2.1.0"
 autopep8 = "^1.5.7"
 coverage = "^6.0.1"
 isort = "^5.9.3"
+jsonschema = "^4.1.0"
 pytest = "^6.2.4"
 pytest-cov = "^3.0.0"
 wemake-python-styleguide = "^0.15.3"
-jsonschema = "^4.1.0"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
