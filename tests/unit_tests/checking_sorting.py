@@ -2,7 +2,7 @@
 """Sorting verification module."""
 
 
-from airflight.data_analysis import (
+from airflights.data_analysis import (
     get_flights_filtered_direction,
     get_flights_sorted_price,
     get_flights_sorted_time,

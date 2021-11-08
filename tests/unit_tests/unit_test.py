@@ -1,7 +1,8 @@
 # -*- coding: utf8 -*-
 """Tests the functions of web service."""
 
-from airflight.data_analysis import (
+from airflights.auxiliary_func import formatting_time
+from airflights.data_analysis import (
     get_flights_filtered_direction,
     get_optimal_route,
 )
@@ -121,3 +122,21 @@ def test_get_optimal_route(get_routes_in_parts):
         assert median_price_optimal_route <= get_median_price(
             filtered_flight_direction,
         )
+
+
+def test_formatting_time(all_flights):
+    """Test of the function get_formatting_time.
+
+    Args:
+        all_flights (fixture): a fixture function that returns a function that,
+            when called, returns a list of flights, where each flight is
+            represented by a dictionary.
+    """
+    is_str = True
+    flights_with_formatting_time = formatting_time(all_flights)
+
+    for flight in flights_with_formatting_time:
+        if not isinstance(flight['TotalTravelTime'], str):
+            is_str = False
+
+    assert is_str

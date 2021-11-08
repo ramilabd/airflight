@@ -2,7 +2,7 @@ name: TestLint
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
     branches: [ main ]
 
@@ -24,7 +24,7 @@ jobs:
         poetry install
     - name: Lint with flake8 (wemake-python-styleguide)
       run: |
-        poetry run flake8 airflight tests
+        poetry run flake8 airflights tests
     - name: Test with pytest
       run: |
         poetry run pytest

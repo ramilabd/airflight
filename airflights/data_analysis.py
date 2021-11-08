@@ -4,8 +4,8 @@
 
 from functools import lru_cache
 
-from airflight.auxiliary_func import add_total_travel_time, get_flight_weights
-from airflight.parser_xml import FILE_PATH, get_xml_tree
+from airflights.auxiliary_func import add_total_travel_time, get_flight_weights
+from airflights.parser_xml import FILE_PATH, get_xml_tree
 
 
 def get_all_flights():
@@ -131,8 +131,8 @@ def get_all_routes():
         With an indication of the place of departure, transfer and destination.
 
     Returns:
-        list: list of routes (source, transfer, destination),
-            each route is represented by a dictionary.
+        list: list of routes, each route is represented by a dictionary
+            of the form {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
     flights = get_all_flights()
     all_routes = []

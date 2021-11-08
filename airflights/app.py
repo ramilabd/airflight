@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 """Flask application module."""
 
-from airflight.auxiliary_func import formatting_time
-from airflight.data_analysis import (
+from airflights.auxiliary_func import formatting_time
+from airflights.data_analysis import (
     get_all_flights,
     get_all_routes,
     get_flights_filtered_direction,
@@ -12,13 +12,13 @@ from airflight.data_analysis import (
 )
 from flask import Flask, jsonify
 
-app = Flask(__name__)
+app = Flask(__name__.split('.')[0])
 
 
 @app.route('/')
-@app.route('/airflight')
+@app.route('/main_page')
 def index():
-    """Route handler '/' or 'airflight'.
+    """Route handler '/' and '/main_page'.
 
     Returns:
         html: main page of web service.
@@ -26,7 +26,7 @@ def index():
     return 'Hello, this main page!'
 
 
-@app.route('/airflight/flights')
+@app.route('/airflights/flights')
 def receive_all_flights():
     """Route handler '/flights'.
 
@@ -39,7 +39,7 @@ def receive_all_flights():
     return jsonify(formatting_time(get_all_flights()))
 
 
-@app.route('/airflight/flights/sorted_by_direction/<source>/<destination>')
+@app.route('/airflights/flights/sorted_by_direction/<source>/<destination>')
 def receive_sorted_flights_by_direction(source, destination):
     """Route handler '/sorted_by_direction'.
 
@@ -60,7 +60,7 @@ def receive_sorted_flights_by_direction(source, destination):
         )))
 
 
-@app.route('/airflight/flights/sorted_by_price/<source>/<destination>')
+@app.route('/airflights/flights/sorted_by_price/<source>/<destination>')
 def receive_flights_sorted_price(source, destination):
     """Route handler '/sorted_by_price'.
 
@@ -82,7 +82,7 @@ def receive_flights_sorted_price(source, destination):
         ))))
 
 
-@app.route('/airflight/flights/sorted_by_time/<source>/<destination>')
+@app.route('/airflights/flights/sorted_by_time/<source>/<destination>')
 def receive_flight_sorted_time(source, destination):
     """Route handler '/sorted_by_time'.
 
@@ -104,7 +104,7 @@ def receive_flight_sorted_time(source, destination):
         ))))
 
 
-@app.route('/airflight/flights/optimal_routes/<source>/<destination>')
+@app.route('/airflights/flights/optimal_routes/<source>/<destination>')
 def receive_get_optimal_route(source, destination):
     """Route handler '/optimal_routes'.
 
@@ -121,15 +121,16 @@ def receive_get_optimal_route(source, destination):
     return jsonify(formatting_time(get_optimal_route(source, destination)))
 
 
-@app.route('/airflight/flights/routes')
+@app.route('/airflights/flights/all_routes')
 def receive_get_all_route():
-    """Route handler '/routes'.
+    """Route handler '/all_routes'.
 
     Calls the funcrion 'get_all_routes', formats her response in 'json',
     puts the time (datetime) in the string.
 
     Returns:
-        json: list of routes.
+        json: list of routes, each route is represented by a dictionary
+            of the form {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
     return jsonify(get_all_routes())
 

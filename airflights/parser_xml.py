@@ -7,7 +7,7 @@ from functools import lru_cache, partial
 
 from lxml import etree
 
-FILE_PATH = './airflight/data/RS_Via-3.xml'
+FILE_PATH = './airflights/data/RS_Via-3.xml'
 
 
 def count_bytes(fileobject, mv):

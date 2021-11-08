@@ -2,7 +2,8 @@
 """Definition of the fixtures of pytest."""
 
 import pytest
-from airflight.data_analysis import get_all_flights, get_all_routes
+from airflights.app import app
+from airflights.data_analysis import get_all_flights, get_all_routes
 
 
 def get_function(func):
@@ -30,7 +31,7 @@ def all_flights():
         Fixture function.
 
     Returns:
-        list: list: list of flights, each flight
+        list: list of flights, each flight
             is represented by a dictionary.
     """
     return get_all_flights()
@@ -51,3 +52,17 @@ def get_routes_in_parts():
             {'Source': ..., 'Transfer': ..., 'Destination': ...}
     """
     yield from get_all_routes()
+
+
+@pytest.fixture()
+def test_client():
+    """Create a test client for application and return this.
+
+    Yields:
+        class flask.testing.FlaskClient: application Flask for
+            functionaly testing.
+    """
+    app.testing = True
+    with app.test_client() as client:
+        with app.app_context():
+            yield client
