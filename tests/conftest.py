@@ -2,8 +2,8 @@
 """Definition of the fixtures of pytest."""
 
 import pytest
-from airflight.app import app
-from airflight.data_analysis import get_all_flights, get_all_routes
+from airflights.app import app
+from airflights.data_analysis import get_all_flights, get_all_routes
 
 
 def get_function(func):

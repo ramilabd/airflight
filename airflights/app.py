@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 """Flask application module."""
 
-from airflight.auxiliary_func import formatting_time
-from airflight.data_analysis import (
+from airflights.auxiliary_func import formatting_time
+from airflights.data_analysis import (
     get_all_flights,
     get_all_routes,
     get_flights_filtered_direction,

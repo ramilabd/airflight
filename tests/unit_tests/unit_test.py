@@ -1,8 +1,8 @@
 # -*- coding: utf8 -*-
 """Tests the functions of web service."""
 
-from airflight.auxiliary_func import formatting_time
-from airflight.data_analysis import (
+from airflights.auxiliary_func import formatting_time
+from airflights.data_analysis import (
     get_flights_filtered_direction,
     get_optimal_route,
 )

@@ -4,8 +4,8 @@
 
 from functools import lru_cache
 
-from airflight.auxiliary_func import add_total_travel_time, get_flight_weights
-from airflight.parser_xml import FILE_PATH, get_xml_tree
+from airflights.auxiliary_func import add_total_travel_time, get_flight_weights
+from airflights.parser_xml import FILE_PATH, get_xml_tree
 
 
 def get_all_flights():
