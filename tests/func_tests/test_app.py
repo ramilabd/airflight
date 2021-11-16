@@ -10,8 +10,10 @@ from tests.func_tests.set_json_schemes import (
 )
 
 
-def test_app_airflights(test_client):
-    """Check the availability of the web application.
+def test_main_page(test_client):
+    """Testing a resource: '/' and '/main_page'.
+
+        Check the availability of the web application.
 
     Args:
         test_client (fixture class flask.testing.FlaskClient): application
@@ -20,66 +22,31 @@ def test_app_airflights(test_client):
     assert test_client.get('/main_page').status_code == 200
 
 
-def test_validate_response_all_flights(test_client):
-    """Validating the function response.
+def test_flights(test_client):
+    """Testing a resource: '/airflights/all_flights'.
 
-        Validating the function "receive_all_flights" response for compliance
-        with the specified json schema.
+        Testing a resource represented by the class Flights.
 
     Args:
         test_client (fixture: class flask.testing.FlaskClient): application
             Flask for functionaly testing.
     """
-    response_json = test_client.get('/airflights/flights').get_json()
-
-    assert is_corresponds_to_jsonscheme(response_json)
-
-
-def test_validate_response_json(test_client, get_routes_in_parts):
-    """Validating the function response.
-
-        Validating the function "receive_sorted_flights_by_direction" response
-        for compliance with the specified json schema.
-
-    Args:
-        test_client (fixture: class flask.testing.FlaskClient): application
-            Flask for functionaly testing.
-        get_routes_in_parts (fixture): Returns each route from the list
-            separately. Each route is represented by a dictionary,
-            dictionary of the form:
-            {'Source': ..., 'Transfer': ..., 'Destination': ...}.
-    """
-    urls = [
-        '/airflights/flights/sorted_by_direction/<source>/<destination>',
-        '/airflights/flights/sorted_by_price/<source>/<destination>',
-        '/airflights/flights/sorted_by_time/<source>/<destination>',
-        '/airflights/flights/optimal_routes/<source>/<destination>',
-    ]
-    for url in urls:
-        for route in get_routes_in_parts():
-            response_json = test_client.get(
-                url,
-                data={
-                    'source': route.get('Source'),
-                    'destination': route.get('Destination'),
-                },
-            ).get_json(force=True)
-
-            assert is_corresponds_to_jsonscheme(response_json)
+    assert is_corresponds_to_jsonscheme(
+        test_client.get('/airflights/all_flights').get_json(force=True),
+    )
 
 
-def test_validate_response_get_all_route(test_client):
-    """Validating the function response.
+def test_routes(test_client):
+    """Testing a resource: '/airflights/all_routes'.
 
-        Validating the function "receive_get_all_route" response
-        for compliance with the specified json schema.
+        Testing a resource represented by the class Routes.
 
     Args:
         test_client (fixture: class flask.testing.FlaskClient): application
             Flask for functionaly testing.
     """
     response_json = test_client.get(
-        '/airflights/flights/all_routes',
+        '/airflights/all_routes',
     ).get_json(force=True)
 
     is_json_valide = True
@@ -97,8 +64,41 @@ def test_validate_response_get_all_route(test_client):
         assert is_json_valide
 
 
+def test_sorting_classes(test_client, get_routes_in_parts):
+    """Testing a resources represented by the classes.
+
+        Classes:
+        Direction, SortedPrice, SortedTime, OptimalRoutes.
+
+    Args:
+        test_client (fixture: class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+        get_routes_in_parts (fixture): returns each route from the list
+            separately. Each route is represented by a dictionary,
+            dictionary of the form:
+            {'Source': ..., 'Transfer': ..., 'Destination': ...}.
+    """
+    urls = [
+        '/airflights/all_flights/sorted_by_direction/<source>/<destination>',
+        '/airflights/all_flights/sorted_by_price/<source>/<destination>',
+        '/airflights/all_flights/sorted_by_time/<source>/<destination>',
+        '/airflights/all_flights/optimal_routes/<source>/<destination>',
+    ]
+    for url in urls:
+        for route in get_routes_in_parts():
+            response_json = test_client.get(
+                url,
+                data={
+                    'source': route.get('Source'),
+                    'destination': route.get('Destination'),
+                },
+            ).get_json(force=True)
+
+            assert is_corresponds_to_jsonscheme(response_json)
+
+
 def is_corresponds_to_jsonscheme(response_json):
-    """Validate to the specified scheme.
+    """Validate of response to the specified scheme.
 
     Args:
         response_json (json): response of the function.
