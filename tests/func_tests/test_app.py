@@ -11,7 +11,7 @@ from tests.func_tests.set_json_schemes import (
 
 
 def test_main_page(test_client):
-    """Testing a resource: '/' and '/main_page'.
+    """Testing a resource: '/docs'.
 
         Check the availability of the web application.
 
@@ -19,11 +19,11 @@ def test_main_page(test_client):
         test_client (fixture class flask.testing.FlaskClient): application
             Flask for functionaly testing.
     """
-    assert test_client.get('/main_page').status_code == 200
+    assert test_client.get('/docs').status_code == 200
 
 
 def test_flights(test_client):
-    """Testing a resource: '/airflights/all_flights'.
+    """Testing a resource: '/all_flights'.
 
         Testing a resource represented by the class Flights.
 
@@ -32,12 +32,12 @@ def test_flights(test_client):
             Flask for functionaly testing.
     """
     assert is_corresponds_to_jsonscheme(
-        test_client.get('/airflights/all_flights').get_json(force=True),
+        test_client.get('/all_flights').get_json(force=True),
     )
 
 
 def test_routes(test_client):
-    """Testing a resource: '/airflights/all_routes'.
+    """Testing a resource: '/all_routes'.
 
         Testing a resource represented by the class Routes.
 
@@ -46,7 +46,7 @@ def test_routes(test_client):
             Flask for functionaly testing.
     """
     response_json = test_client.get(
-        '/airflights/all_routes',
+        '/all_routes',
     ).get_json(force=True)
 
     is_json_valide = True
@@ -79,10 +79,10 @@ def test_sorting_classes(test_client, get_routes_in_parts):
             {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
     urls = [
-        '/airflights/all_flights/sorted_by_direction/<source>/<destination>',
-        '/airflights/all_flights/sorted_by_price/<source>/<destination>',
-        '/airflights/all_flights/sorted_by_time/<source>/<destination>',
-        '/airflights/all_flights/optimal_routes/<source>/<destination>',
+        '/all_flights/sorted_by_direction/<source>/<destination>',
+        '/all_flights/sorted_by_price/<source>/<destination>',
+        '/all_flights/sorted_by_time/<source>/<destination>',
+        '/all_flights/optimal_routes/<source>/<destination>',
     ]
     for url in urls:
         for route in get_routes_in_parts():
