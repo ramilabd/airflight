@@ -16,4 +16,8 @@ test-coverage:
 selfcheck:
 	poetry check
 
+dev-start:
+	@export FLASK_APP=airflights/app;	export FLASK_ENV=development;	poetry run python -m airflights.app
+
+
 .PHONY: install test tests lint selfcheck check
