@@ -86,15 +86,22 @@ def test_sorting_classes(test_client, get_routes_in_parts):
     ]
     for url in urls:
         for route in get_routes_in_parts():
+            print('route.get', route.get('Source'))
+            print('route.get', route.get('Destination'))
+            print(url)
+
             response_json = test_client.get(
                 url,
                 data={
-                    'source': route.get('Source'),
-                    'destination': route.get('Destination'),
+                    'Source': route.get('Source'),
+                    'Destination': route.get('Destination'),
                 },
             ).get_json(force=True)
 
+            print('response_json - ', response_json)
+
             assert is_corresponds_to_jsonscheme(response_json)
+            assert response_json != []
 
 
 def is_corresponds_to_jsonscheme(response_json):
@@ -108,7 +115,6 @@ def is_corresponds_to_jsonscheme(response_json):
             False - does not match the specified scheme.
     """
     is_json_valide = True
-
     for flight in response_json:
         if flight.get('flight2') is None:
             scheme = flight1_scheme

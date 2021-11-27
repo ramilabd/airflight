@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 """Flask application module."""
 
+from itertools import chain
+
 from airflights.auxiliary_func import formatting_time
 from airflights.data_analysis import (
     get_all_flights,
@@ -10,18 +12,30 @@ from airflights.data_analysis import (
     get_flights_sorted_time,
     get_optimal_route,
 )
-from flask import Flask
+from flask import Flask, abort
 from flask_restful import Api, Resource
 
 app = Flask(__name__.split('.')[0])
 api = Api(app, default_mediatype='application/json')
 
 
+def is_valid_parameters(source, destination):
+    print('is_valid_..:', source, ': ', type(source))
+
+    all_routes = get_all_routes()
+    routes = (list(route.values()) for route in all_routes)
+    airports = set(chain(*routes))
+
+    if source in airports and destination in airports:
+        return True
+    return False
+
+
 class Docs(Resource):
     """Represents a specific RESTful resource.
 
         Provides a 'get()' method for the HTTP GET method.
-        RESTful resource: '/docs'.
+        RESTful resource: '/docs' or '/'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -59,7 +73,6 @@ class Flights(Resource):
             list: list of all flights.
         """
         return formatting_time(get_all_flights()), 200
-
 
 class Routes(Resource):
     """Represents a specific RESTful resource.
@@ -112,11 +125,13 @@ class Direction(Resource):
         Returns:
             list: list of flights.
         """
-        return formatting_time(get_flights_filtered_direction(
-            source,
-            destination,
-        ))
-
+        print('get:', source, ': ', type(source))
+        if is_valid_parameters(source, destination):
+            return formatting_time(get_flights_filtered_direction(
+                source,
+                destination,
+            )), 200
+        return []
 
 class SortedPrice(Resource):
     """Represents a specific RESTful resource.
@@ -219,7 +234,7 @@ class OptimalRoutes(Resource):
         return formatting_time(get_optimal_route(source, destination))
 
 
-api.add_resource(Docs, '/docs', endpoint='docs')
+api.add_resource(Docs, '/', '/docs', endpoint='docs')
 api.add_resource(Flights, '/all_flights', endpoint='flights')
 api.add_resource(Routes, '/all_routes', endpoint='routes')
 api.add_resource(
