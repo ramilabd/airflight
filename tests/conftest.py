@@ -30,7 +30,7 @@ def all_flights():
 
         Fixture function.
 
-    Returns:
+    Yields:
         list: list of flights, each flight
             is represented by a dictionary.
     """
