@@ -84,12 +84,11 @@ def is_correct_filtered_by_direction(all_flights, get_routes_in_parts):
         bool: True if the filtering is correct, False if the filtering
             is incorrect.
     """
-    for route in get_routes_in_parts():
+    for route in get_routes_in_parts:
         sort_flights_by_source_destination = get_flights_filtered_direction(
             route['Source'],
             route['Destination'],
         )
-
         return count_flights(
             all_flights,
             sort_flights_by_source_destination,
@@ -113,7 +112,6 @@ def count_flights(first_sequence, second_sequence):
     for elem in first_sequence:
         if elem in second_sequence:
             count_elem += 1
-
     return count_elem
 
 

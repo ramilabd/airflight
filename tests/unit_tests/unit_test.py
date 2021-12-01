@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 """Tests the functions of web service."""
 
+from itertools import chain
+
 from airflights.auxiliary_func import formatting_time
 from airflights.data_analysis import (
     get_flights_filtered_direction,
@@ -77,20 +79,21 @@ def test_get_all_routes(all_flights, get_routes_in_parts):
             dictionary of the form:
             {'Source': ..., 'Transfer': ..., 'Destination': ...}.
     """
-    total_count_flights = len(all_flights)
-    count_each_route = {}
-    for route in get_routes_in_parts():
-        direction = '{0}-{1}-{2}'.format(
-            route['Source'],
-            route.get('Transfer', None),
-            route['Destination'],
-        )
-        if count_each_route.get(direction):
-            count_each_route[direction] += 1
-        else:
-            count_each_route[direction] = 1
+    routes = (list(route.values()) for route in get_routes_in_parts)
+    airports = set(chain(*routes))
 
-    assert sum(count_each_route.values()) == total_count_flights
+    count_each_route = set()
+
+    for flight in all_flights:
+        if flight.get('flight2') is None:
+            count_each_route.add(flight.get('flight1').get('Source'))
+            count_each_route.add(flight.get('flight1').get('Destination'))
+        else:
+            count_each_route.add(flight.get('flight1').get('Source'))
+            count_each_route.add(flight.get('flight1').get('Destination'))
+            count_each_route.add(flight.get('flight2').get('Destination'))
+
+    assert len(count_each_route) == len(airports)
 
 
 def test_get_optimal_route(get_routes_in_parts):
@@ -103,7 +106,7 @@ def test_get_optimal_route(get_routes_in_parts):
             {'Source': ..., 'Transfer': ..., 'Destination': ...}.
             represented by a dictionary {source, transfer, destination}.
     """
-    for route in get_routes_in_parts():
+    for route in get_routes_in_parts:
         filtered_flight_direction = get_flights_filtered_direction(
             route.get('Source'),
             route.get('Destination'),
