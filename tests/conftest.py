@@ -34,7 +34,7 @@ def all_flights():
         list: list of flights, each flight
             is represented by a dictionary.
     """
-    return get_all_flights()
+    yield get_all_flights()
 
 
 @pytest.fixture(scope='module', autouse=True)
