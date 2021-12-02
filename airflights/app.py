@@ -125,7 +125,6 @@ class Direction(Resource):
         Returns:
             list: list of flights.
         """
-        print('get:', source, ': ', type(source))
         if is_valid_parameters(source, destination):
             return formatting_time(get_flights_filtered_direction(
                 source,
