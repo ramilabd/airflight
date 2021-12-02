@@ -96,7 +96,6 @@ def get_flights_sorted_time(flights, reverse=False):
     )
 
 
-@lru_cache
 def get_flights_filtered_direction(source, destination):
     """Return a list of flights sorted by directions.
 
