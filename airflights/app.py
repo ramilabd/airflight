@@ -20,8 +20,6 @@ api = Api(app, default_mediatype='application/json')
 
 
 def is_valid_parameters(source, destination):
-    print('is_valid_..:', source, ': ', type(source))
-
     all_routes = get_all_routes()
     routes = (list(route.values()) for route in all_routes)
     airports = set(chain(*routes))
