@@ -2,8 +2,6 @@
 """Data analysis module."""
 
 
-from functools import lru_cache
-
 from airflights.auxiliary_func import add_total_travel_time, get_flight_weights
 from airflights.parser_xml import FILE_PATH, get_xml_tree
 
