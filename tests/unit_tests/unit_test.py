@@ -5,6 +5,7 @@ from itertools import chain
 
 from airflights.auxiliary_func import formatting_time
 from airflights.data_analysis import (
+    get_all_routes,
     get_flights_filtered_direction,
     get_optimal_route,
 )
@@ -94,6 +95,10 @@ def test_get_all_routes(all_flights, get_routes_in_parts):
             count_each_route.add(flight.get('flight2').get('Destination'))
 
     assert len(count_each_route) == len(airports)
+
+    airports = get_all_routes(return_set_airports=True)
+    assert isinstance(airports, set)
+    assert all([isinstance(airport, str) for airport in airports])
 
 
 def test_get_optimal_route(get_routes_in_parts):
