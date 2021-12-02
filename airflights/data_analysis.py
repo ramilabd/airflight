@@ -158,7 +158,6 @@ def get_all_routes():
     return all_routes
 
 
-@lru_cache
 def get_optimal_route(source, destination, count=10):
     """Return optimal flight routes by time and price.
 
