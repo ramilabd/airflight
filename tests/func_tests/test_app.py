@@ -84,24 +84,18 @@ def test_sorting_classes(test_client, get_routes_in_parts):
         '/all_flights/sorted_by_time/<source>/<destination>',
         '/all_flights/optimal_routes/<source>/<destination>',
     ]
+
     for url in urls:
-        for route in get_routes_in_parts():
-            print('route.get', route.get('Source'))
-            print('route.get', route.get('Destination'))
-            print(url)
+        for route in get_routes_in_parts:
+            url = url.replace('<source>', route.get('Source')).replace(
+                '<destination>',
+                route.get('Destination'),
+            )
 
-            response_json = test_client.get(
-                url,
-                data={
-                    'Source': route.get('Source'),
-                    'Destination': route.get('Destination'),
-                },
-            ).get_json(force=True)
+            response_json = test_client.get(url).get_json(force=True)
 
-            print('response_json - ', response_json)
-
+            assert response_json
             assert is_corresponds_to_jsonscheme(response_json)
-            assert response_json != []
 
 
 def is_corresponds_to_jsonscheme(response_json):
