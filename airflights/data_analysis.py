@@ -150,8 +150,8 @@ def get_all_routes():
                 'Destination': flight.get('flight2').get('Destination'),
             })
 
-        all_routes = (tuple(route.items()) for route in all_routes)
-        all_routes = [dict(route) for route in set(all_routes)]
+    all_routes = (tuple(route.items()) for route in all_routes)
+    all_routes = [dict(route) for route in set(all_routes)]
 
     return all_routes
 
