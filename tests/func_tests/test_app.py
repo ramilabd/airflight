@@ -1,7 +1,9 @@
 # -*- coding: utf8 -*-
 """Functional tests of the application."""
 
+import random
 import string
+
 import jsonschema
 from tests.func_tests.set_json_schemes import (
     flight1_flight2_scheme,
@@ -9,8 +11,6 @@ from tests.func_tests.set_json_schemes import (
     min_route_scheme,
     route_scheme,
 )
-import random
-import string
 
 
 def test_cls_docs(test_client):
@@ -95,10 +95,13 @@ def test_sorting_classes(test_client, get_routes_in_parts):
                 route.get('Destination'),
             )
 
-            response_json = test_client.get(url).get_json(force=True)
+            response_json = test_client.get(url)
 
-            assert response_json
-            assert is_corresponds_to_jsonscheme(response_json)
+            assert response_json.status_code == 200
+            assert response_json.get_json(force=True)
+            assert is_corresponds_to_jsonscheme(
+                response_json.get_json(force=True),
+            )
 
 
 def test_sorting_classes_on_incorrect_parameters(test_client):
