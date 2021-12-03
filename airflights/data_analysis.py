@@ -1,8 +1,7 @@
 # -*- coding: utf8 -*-
 """Data analysis module."""
 
-
-from functools import lru_cache
+from itertools import chain
 
 from airflights.auxiliary_func import add_total_travel_time, get_flight_weights
 from airflights.parser_xml import FILE_PATH, get_xml_tree
@@ -96,7 +95,6 @@ def get_flights_sorted_time(flights, reverse=False):
     )
 
 
-@lru_cache
 def get_flights_filtered_direction(source, destination):
     """Return a list of flights sorted by directions.
 
@@ -125,19 +123,26 @@ def get_flights_filtered_direction(source, destination):
     return filtered_flights
 
 
-def get_all_routes():
-    """Return all possible routes.
+def get_all_routes(return_set_airports=False):
+    """Return all possible routes or a set of airport names.
 
-        With an indication of the place of departure, transfer and destination.
+        With an indication of the place of departure, transfer and destination
+        or a set of airport names.
+
+    Args:
+        return_set_airports (bool): by default, False. Returns a list of
+            dictionaries. The data type is a list.
+            If True, it returns a set of airport names,
+            such as {'DXB', 'BKK', '...', }. Data type set.
 
     Returns:
-        list: list of routes, each route is represented by a dictionary
+        list or set: list of routes, each route is represented by a dictionary
             of the form {'Source': ..., 'Transfer': ..., 'Destination': ...}.
+            Set of airport names such as {'DXB', 'BKK', '...', }.
     """
-    flights = get_all_flights()
     all_routes = []
 
-    for flight in flights:
+    for flight in get_all_flights():
         source = flight.get('flight1').get('Source')
         destination = flight.get('flight1').get('Destination')
 
@@ -153,10 +158,14 @@ def get_all_routes():
                 'Destination': flight.get('flight2').get('Destination'),
             })
 
-    return all_routes
+    if return_set_airports:
+        airports = (list(route.values()) for route in all_routes)
+        return set(chain(*airports))
+
+    all_routes = (tuple(route.items()) for route in all_routes)
+    return [dict(route) for route in set(all_routes)]
 
 
-@lru_cache
 def get_optimal_route(source, destination, count=10):
     """Return optimal flight routes by time and price.
 

@@ -30,15 +30,14 @@ def all_flights():
 
         Fixture function.
 
-    Returns:
+    Yields:
         list: list of flights, each flight
             is represented by a dictionary.
     """
-    return get_all_flights()
+    yield get_all_flights()
 
 
 @pytest.fixture(scope='module', autouse=True)
-@get_function
 def get_routes_in_parts():
     """Return all possible routes.
 
@@ -51,7 +50,7 @@ def get_routes_in_parts():
         dict: dictionary of the form
             {'Source': ..., 'Transfer': ..., 'Destination': ...}
     """
-    yield from get_all_routes()
+    yield get_all_routes()
 
 
 @pytest.fixture()

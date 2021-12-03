@@ -1,8 +1,8 @@
 [tool.poetry]
 authors = ["ramilabd <ramsmart@mail.ru>"]
-description = ""
+description = "Airflights - this is a web service for finding air tickets."
 name = "airflights"
-version = "2.0.0"
+version = "2.1.0"
 
 [tool.poetry.dependencies]
 Flask = "^2.0.1"

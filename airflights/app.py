@@ -17,11 +17,11 @@ app = Flask(__name__.split('.')[0])
 api = Api(app, default_mediatype='application/json')
 
 
-class MainPage(Resource):
+class Docs(Resource):
     """Represents a specific RESTful resource.
 
         Provides a 'get()' method for the HTTP GET method.
-        RESTful resource: '/' and '/main_page'
+        RESTful resource: '/docs' or '/'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -41,7 +41,7 @@ class Flights(Resource):
     """Represents a specific RESTful resource.
 
         Provides a 'get()' method for the HTTP GET method.
-        RESTful resource: '/airflights/all_flights'.
+        RESTful resource: '/all_flights'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -65,7 +65,7 @@ class Routes(Resource):
     """Represents a specific RESTful resource.
 
         Provides a 'get()' method for the HTTP GET method.
-        RESTful resource: '/airflights/all_routes'.
+        RESTful resource: '/all_routes'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -89,7 +89,7 @@ class Direction(Resource):
 
         Provides a 'get()' method for the HTTP GET method.
         RESTful resource:
-        '/airflights/all_flights/sorted_by_direction/<source>/<destination>'
+        '/all_flights/sorted_by_direction/<source>/<destination>'
 
     Args:
         Resource (class flask_restful.Resource):
@@ -112,10 +112,14 @@ class Direction(Resource):
         Returns:
             list: list of flights.
         """
-        return formatting_time(get_flights_filtered_direction(
-            source,
-            destination,
-        ))
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
+            return formatting_time(get_flights_filtered_direction(
+                source,
+                destination,
+            )), 200
+        return [], 404
 
 
 class SortedPrice(Resource):
@@ -123,7 +127,7 @@ class SortedPrice(Resource):
 
         Provides a 'get()' method for the HTTP GET method.
         RESTful resource:
-        '/airflights/all_flights/sorted_by_price/<source>/<destination>'.
+        '/all_flights/sorted_by_price/<source>/<destination>'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -146,11 +150,15 @@ class SortedPrice(Resource):
         Returns:
             list: list of flights.
         """
-        return formatting_time(get_flights_sorted_price(
-            get_flights_filtered_direction(
-                source,
-                destination,
-            )))
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
+            return formatting_time(get_flights_sorted_price(
+                get_flights_filtered_direction(
+                    source,
+                    destination,
+                ))), 200
+        return [], 404
 
 
 class SortedTime(Resource):
@@ -158,7 +166,7 @@ class SortedTime(Resource):
 
         Provides a 'get()' method for the HTTP GET method.
         RESTful resource:
-        '/airflights/all_flights/sorted_by_time/<source>/<destination>'.
+        '/all_flights/sorted_by_time/<source>/<destination>'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -181,11 +189,15 @@ class SortedTime(Resource):
         Returns:
             list: list of flights.
         """
-        return formatting_time(get_flights_sorted_time(
-            get_flights_filtered_direction(
-                source,
-                destination,
-            )))
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
+            return formatting_time(get_flights_sorted_time(
+                get_flights_filtered_direction(
+                    source,
+                    destination,
+                ))), 200
+        return [], 404
 
 
 class OptimalRoutes(Resource):
@@ -193,7 +205,7 @@ class OptimalRoutes(Resource):
 
         Provides a 'get()' method for the HTTP GET method.
         RESTful resource:
-        '/airflights/all_flights/optimal_routes/<source>/<destination>'.
+        '/all_flights/optimal_routes/<source>/<destination>'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -216,27 +228,35 @@ class OptimalRoutes(Resource):
         Returns:
             list: list of optimal flights.
         """
-        return formatting_time(get_optimal_route(source, destination))
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
+            return formatting_time(get_optimal_route(source, destination)), 200
+        return [], 404
 
 
-api.add_resource(MainPage, '/', '/main_page')
-api.add_resource(Flights, '/airflights/all_flights')
-api.add_resource(Routes, '/airflights/all_routes')
+api.add_resource(Docs, '/', '/docs', endpoint='docs')
+api.add_resource(Flights, '/all_flights', endpoint='flights')
+api.add_resource(Routes, '/all_routes', endpoint='routes')
 api.add_resource(
     Direction,
-    '/airflights/all_flights/sorted_by_direction/<source>/<destination>',
+    '/all_flights/sorted_by_direction/<source>/<destination>',
+    endpoint='direction',
 )
 api.add_resource(
     SortedPrice,
-    '/airflights/all_flights/sorted_by_price/<source>/<destination>',
+    '/all_flights/sorted_by_price/<source>/<destination>',
+    endpoint='sortedprice',
 )
 api.add_resource(
     SortedTime,
-    '/airflights/all_flights/sorted_by_time/<source>/<destination>',
+    '/all_flights/sorted_by_time/<source>/<destination>',
+    endpoint='sortedtime',
 )
 api.add_resource(
     OptimalRoutes,
-    '/airflights/all_flights/optimal_routes/<source>/<destination>',
+    '/all_flights/optimal_routes/<source>/<destination>',
+    endpoint='optimalroutes',
 )
 
 
