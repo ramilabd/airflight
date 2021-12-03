@@ -125,18 +125,16 @@ def test_sorting_classes_on_incorrect_parameters(test_client):
     for url in urls:
         source = ''.join(random.sample(random_chars, random.randint(1, 3)))
         destination = ''.join(
-            random.sample(random_chars, random.randint(1, 3))
-            )
+            random.sample(random_chars, random.randint(1, 3)),
+        )
 
         url = url.replace('<source>', source).replace(
             '<destination>',
             destination,
         )
 
-        response_json = test_client.get(url)
-
-        assert not response_json.get_json(force=True)
-        assert response_json.status_code == 404
+        assert test_client.get(url).status_code == 404
+        assert not test_client.get(url).get_json(force=True)
 
 
 def is_corresponds_to_jsonscheme(response_json):
