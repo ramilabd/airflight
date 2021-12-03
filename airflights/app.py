@@ -1,8 +1,6 @@
 # -*- coding:utf-8 -*-
 """Flask application module."""
 
-from itertools import chain
-
 from airflights.auxiliary_func import formatting_time
 from airflights.data_analysis import (
     get_all_flights,
@@ -12,21 +10,11 @@ from airflights.data_analysis import (
     get_flights_sorted_time,
     get_optimal_route,
 )
-from flask import Flask, abort
+from flask import Flask
 from flask_restful import Api, Resource
 
 app = Flask(__name__.split('.')[0])
 api = Api(app, default_mediatype='application/json')
-
-
-def is_valid_parameters(source, destination):
-    all_routes = get_all_routes()
-    routes = (list(route.values()) for route in all_routes)
-    airports = set(chain(*routes))
-
-    if source in airports and destination in airports:
-        return True
-    return False
 
 
 class Docs(Resource):
@@ -71,6 +59,7 @@ class Flights(Resource):
             list: list of all flights.
         """
         return formatting_time(get_all_flights()), 200
+
 
 class Routes(Resource):
     """Represents a specific RESTful resource.
@@ -123,12 +112,15 @@ class Direction(Resource):
         Returns:
             list: list of flights.
         """
-        if is_valid_parameters(source, destination):
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
             return formatting_time(get_flights_filtered_direction(
                 source,
                 destination,
             )), 200
-        return []
+        return [], 404
+
 
 class SortedPrice(Resource):
     """Represents a specific RESTful resource.
