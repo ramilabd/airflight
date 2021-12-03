@@ -10,7 +10,7 @@ from tests.func_tests.set_json_schemes import (
 )
 
 
-def test_main_page(test_client):
+def test_cls_docs(test_client):
     """Testing a resource: '/docs'.
 
         Check the availability of the web application.
@@ -22,7 +22,7 @@ def test_main_page(test_client):
     assert test_client.get('/docs').status_code == 200
 
 
-def test_flights(test_client):
+def test_cls_flights(test_client):
     """Testing a resource: '/all_flights'.
 
         Testing a resource represented by the class Flights.
@@ -36,7 +36,7 @@ def test_flights(test_client):
     )
 
 
-def test_routes(test_client):
+def test_cls_routes(test_client):
     """Testing a resource: '/all_routes'.
 
         Testing a resource represented by the class Routes.
