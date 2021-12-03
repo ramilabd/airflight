@@ -150,11 +150,15 @@ class SortedPrice(Resource):
         Returns:
             list: list of flights.
         """
-        return formatting_time(get_flights_sorted_price(
-            get_flights_filtered_direction(
-                source,
-                destination,
-            )))
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
+            return formatting_time(get_flights_sorted_price(
+                get_flights_filtered_direction(
+                    source,
+                    destination,
+                ))), 200
+        return [], 404
 
 
 class SortedTime(Resource):
@@ -185,11 +189,15 @@ class SortedTime(Resource):
         Returns:
             list: list of flights.
         """
-        return formatting_time(get_flights_sorted_time(
-            get_flights_filtered_direction(
-                source,
-                destination,
-            )))
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
+            return formatting_time(get_flights_sorted_time(
+                get_flights_filtered_direction(
+                    source,
+                    destination,
+                ))), 200
+        return [], 404
 
 
 class OptimalRoutes(Resource):
@@ -220,7 +228,11 @@ class OptimalRoutes(Resource):
         Returns:
             list: list of optimal flights.
         """
-        return formatting_time(get_optimal_route(source, destination))
+        airports = get_all_routes(return_set_airports=True)
+
+        if source in airports and destination in airports:
+            return formatting_time(get_optimal_route(source, destination)), 200
+        return [], 404
 
 
 api.add_resource(Docs, '/', '/docs', endpoint='docs')
