@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 """Functional tests of the application."""
 
+import string
 import jsonschema
 from tests.func_tests.set_json_schemes import (
     flight1_flight2_scheme,
@@ -8,6 +9,8 @@ from tests.func_tests.set_json_schemes import (
     min_route_scheme,
     route_scheme,
 )
+import random
+import string
 
 
 def test_cls_docs(test_client):
@@ -96,6 +99,41 @@ def test_sorting_classes(test_client, get_routes_in_parts):
 
             assert response_json
             assert is_corresponds_to_jsonscheme(response_json)
+
+
+def test_sorting_classes_on_incorrect_parameters(test_client):
+    """Testing a resources represented by the classes.
+
+        Testing for incorrect parameters in the query string.
+        Classes: Direction, SortedPrice, SortedTime, OptimalRoutes.
+
+    Args:
+        test_client (fixture: class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+    """
+    urls = [
+        '/all_flights/sorted_by_direction/<source>/<destination>',
+        '/all_flights/sorted_by_price/<source>/<destination>',
+        '/all_flights/sorted_by_time/<source>/<destination>',
+        '/all_flights/optimal_routes/<source>/<destination>',
+    ]
+    random_chars = string.ascii_letters + string.digits
+
+    for url in urls:
+        source = ''.join(random.sample(random_chars, random.randint(1, 3)))
+        destination = ''.join(
+            random.sample(random_chars, random.randint(1, 3))
+            )
+
+        url = url.replace('<source>', source).replace(
+            '<destination>',
+            destination,
+        )
+
+        response_json = test_client.get(url)
+
+        assert not response_json.get_json(force=True)
+        assert response_json.status_code == 404
 
 
 def is_corresponds_to_jsonscheme(response_json):
