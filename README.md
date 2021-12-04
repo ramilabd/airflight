@@ -13,199 +13,173 @@ Airflights - this is a web service for finding air tickets.
 
 Works on [Flask](https://flask.palletsprojects.com/en/2.0.x/) and [Flask-restful](https://flask-restful.readthedocs.io/en/latest/)
 
+Deployed on [Heroku](https://airflights.herokuapp.com/)
+
 # Features
 
 - Choosing the flight direction
 - The most expensive/cheapest flight
 - The fastest/longest and optimal flight options
 
-# Documentation
-
-Доступ к ресурсам осуществляется через строку запроса методом GET протокола HTTP.
-
-В REST API определены слудующие конечные точки:
-
-- `/main_page` или `/`
-
-  Главная страница веб сервиса. Здесь также написана документация.
-  Тип возвращаемого ответа - `HTML`.
-
-- `/airflights/flights/all_routes`
-
-  Тип возвращаемого ответа - `JSON`. Содержит список маршрутов, где каждый маршрут представлен словарем, вида:
-
-  ```python
-  {
-      "Destination": "BKK",
-      "Source": "DXB",
-      "Transfer": "DEL"    # если имеется
-  },
-  ```
-
-- `/airflights/flights`
-
-  При обращении к данной конечной точке, сервер вернет все имеющиеся авиа рейсы.
-  Тип возвращаемого ответа - `JSON`. Содержит список рейсов.
-
-- `/airflights/flights/sorted_by_direction/<source>/<destination>`
-
-  Конечная точка принимает два параметра:
-
-  `source` - место отправления, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  `destination` - место прибытия, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  Тип возвращаемого ответа - `JSON`, содержаший список рейсов отфильтрованных по месту отправления и прибытия.
-
-- `/airflights/flights/sorted_by_price/<source>/<destination>`
-
-  Конечная точка принимает два параметра:
-
-  `source` - место отправления, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  `destination` - место прибытия, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  Тип возвращаемого ответа - `JSON`, содержаший список рейсов, отсортированных по цене.
-
-- `/airflights/flights/sorted_by_time/<source>/<destination>`
-
-  Конечная точка принимает два параметра:
-
-  `source` - место отправления, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  `destination` - место прибытия, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  Тип возвращаемого ответа - `JSON`, содержаший список рейсов, отсортированных по времени перелета.
-
-- `/airflights/flights/optimal_routes/<source>/<destination>`
-
-  Конечная точка принимает два параметра:
-
-  `source` - место отправления, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  `destination` - место прибытия, сокращенное наименование аэропорта. Тип параметра `string`.
-
-  Тип возвращаемого ответа - `JSON`, содержаший список оптимальных рейсов по цене и времени перелета.
-
-Каждый рейс в списке возвращаемом конечными точками представлен словарем, вида:
-
-```python
-{
-  "Price": {
-    "Currency": "...",
-    "TicketPrice": "..."
-  },
-  "TotalTravelTime": "...",
-  "flight1": {
-    "ArrivalTimeStamp": "...",
-    "Carrier": "...",
-    "Class": "...",
-    "DepartureTimeStamp": "...",
-    "Destination": "...",
-    "FareBasis": "...",
-    "FlightNumber": "...",
-    "NumberOfStops": "...",
-    "Source": "...",
-    "TicketType": "..."
-  },
-  "flight2": {
-      "flight2" # по структуре повторяет "flight1", отвображается в результате поиска только если маршрут состоит из двух рейсов.
-  }
-},
-```
-
 # Examples
 
-Пример запроса:
-`/airflights/flights/sorted_by_direction/DXB/BKK`
+A simple example request:
 
-ответ:
-
-```python
-[
-  {
-    "Price": {
-      "Currency": "SGD",
-      "TicketPrice": "546.80"
-    },
-    "TotalTravelTime": "19:30:00",
-    "flight1": {
-      "ArrivalTimeStamp": "2018-10-22T0445",
-      "Carrier": "AirIndia",
-      "Class": "G",
-      "DepartureTimeStamp": "2018-10-22T0005",
-      "Destination": "DEL",
-      "FareBasis": "2820231f40c802-03e6-4655-9ece-0fb1ad670b5c@@$255_DXB_DEL_996_9_00:05_$255_DEL_BKK_332_9_13:50_$255_BKK_DEL_333_9_08:50_$255_DEL_DXB_995_9_20:40__A2_0_0",
-      "FlightNumber": "996",
-      "NumberOfStops": "0",
-      "Source": "DXB",
-      "TicketType": "E"
-    },
-    "flight2": {
-      "ArrivalTimeStamp": "2018-10-22T1935",
-      "Carrier": "AirIndia",
-      "Class": "G",
-      "DepartureTimeStamp": "2018-10-22T1350",
-      "Destination": "BKK",
-      "FareBasis": "2820231f40c802-03e6-4655-9ece-0fb1ad670b5c@@$255_DXB_DEL_996_9_00:05_$255_DEL_BKK_332_9_13:50_$255_BKK_DEL_333_9_08:50_$255_DEL_DXB_995_9_20:40__A2_0_0",
-      "FlightNumber": "332",
-      "NumberOfStops": "0",
-      "Source": "DEL",
-      "TicketType": "E"
-    }
-  },
-  {
-    "Price": {
-      "Currency": "SGD",
-      "TicketPrice": "623.80"
-    },
-    "TotalTravelTime": "18:55:00",
-    "flight1": { ...
+```
+  https://airflights.herokuapp.com/all_flights
 ```
 
-# Contributing
+Returns the response:
 
-# License
+```json
+[{"flight1": {"Carrier": "AirIndia", "FlightNumber": "996", "Source": "DXB", "Destination": "DEL", "DepartureTimeStamp": "2018-10-22T0005", "ArrivalTimeStamp": "2018-10-22T0445", "Class": "G", "NumberOfStops": "0", "FareBasis": "2820231f40c802-03e6-4655-9ece-0fb1ad670b5c@@$255_D .......]
+```
 
-# Gratitude
+Request with parameters:
 
-Реализация данного проекта была бы невозможна без знаний полученным на курсах программирования [Hexlet](https://ru.hexlet.io). Это крутейший ресурс по обучению программированию в интернете. Отличная подача информации, мозговзрывающие задания, сложные проекты и классное сообщество. Спасибо Hexlet! Я все еще продолжаю там учиться. Мои проекты:
+```
+  https://airflights.herokuapp.com/all_flights/optimal_routes/DXB/BKK
+```
 
-- [python-project-lvl1](https://github.com/ramilabd/python-project-lvl1) - завершен
-- [python-project-lvl2](https://github.com/ramilabd/python-project-lvl2) - в работе
+Returns the response:
 
-Также большое спасибо сообществу [Хекслет Комьюнити](hexlet-ru.slack.com) в слаке (Slack), за ваши ответы на мои "глупые" вопросы :).
+```json
+[{"flight1": {"Carrier": "JetAirways", "FlightNumber": "537", "Source": "DXB", "Destination": "BOM", "DepartureTimeStamp": "2018-10-22T1845", "ArrivalTimeStamp": "2018-10-22T2330", "Class": "V", "NumberOfStops": "0", "FareBasis": "2820231f40c802-03e6-4655-9ece-0fb1ad670b5c@@$255_DXB_BOM_537_6_18:45_$255_BOM_BKK_62_6_01:05_$255_BKK_BOM_61_6_08:55_$255_BOM_DXB_538_6_15:40__A2_0_0", "TicketType": "E"}, "Price": {"TicketPrice": "647.40", .... ]
+```
 
-# Contacts
+# Documentation
 
-[Аккаунт на Hexlet](https://ru.hexlet.io/ramilabd).
+## Request methods
 
-[LinkedIn](https://www.linkedin.com/in/%D1%80%D0%B0%D0%BC%D0%B8%D0%BB%D1%8C-%D0%B0%D0%B1%D0%B4%D1%83%D1%80%D0%B0%D1%85%D0%BC%D0%B0%D0%BD%D0%BE%D0%B2-510793b4/)
+Only the GET HTTP method is used.
 
-[Аккаунт в Slack](https://hexlet-ru.slack.com/U01611HB7U3)
+## Response
 
-электропочта ramsmart@mail.ru
+Returns a response in JSON format. If there is no data, returns an empty JSON and status code 404.
+
+## Endpoints:
+
+All our API’s are prefixed with `https://airflights.herokuapp.com`.
+
+```
+  /docs
+```
+
+or
+
+```
+  /
+```
+
+Return: web service documentation page.
+
+```
+  /all_flights
+```
+
+Return JSON: all possible flights. Example of flights representation:
+
+```json
+{
+  "flight1": {
+    "Carrier": "AirIndia",
+    "FlightNumber": "996",
+    "Source": "DXB",
+    "Destination": "DEL",
+    "DepartureTimeStamp": "2018-10-22T0005",
+    "ArrivalTimeStamp": "2018-10-22T0445",
+    "Class": "G",
+    "NumberOfStops": "0",
+    "FareBasis": "2820231f40c802-03e6-4655-9ece-0fb1ad670b5c@@$255_DXB_DEL_996_9_00:05_$255_DEL_BKK_332_9_13:50_$255_BKK_DEL_333_9_08:50_$255_DEL_DXB_995_9_20:40__A2_0_0",
+    "TicketType": "E"
+  },
+  "Price": {
+    "TicketPrice": "546.80",
+    "Currency": "SGD"
+  },
+  "flight2": {
+    "Carrier": "AirIndia",
+    "FlightNumber": "332",
+    "Source": "DEL",
+    "Destination": "BKK",
+    "DepartureTimeStamp": "2018-10-22T1350",
+    "ArrivalTimeStamp": "2018-10-22T1935",
+    "Class": "G",
+    "NumberOfStops": "0",
+    "FareBasis": "2820231f40c802-03e6-4655-9ece-0fb1ad670b5c@@$255_DXB_DEL_996_9_00:05_$255_DEL_BKK_332_9_13:50_$255_BKK_DEL_333_9_08:50_$255_DEL_DXB_995_9_20:40__A2_0_0",
+    "TicketType": "E"
+  },
+  "TotalTravelTime": "19:30:00"
+}
+```
+
+```
+  /all_routes
+```
+
+Return JSON: all possible flight routes. Example of route representation:
+
+```json
+{
+  "Source": "DXB",
+  "Transfer": "DEL",
+  "Destination": "BKK"
+}
+```
+
+Filters flights by destinations:
+
+```
+  /all_flights/sorted_by_direction/<source>/<destination>
+```
+
+Sorts flights by price:
+
+```
+  /all_flights/sorted_by_price/<source>/<destination>
+```
+
+Sorts flights by travel time:
+
+```
+  /all_flights/sorted_by_time/<source>/<destination>
+```
+
+Returns optimal routes by price and travel time:
+
+```
+  /all_flights/optimal_routes/<source>/<destination>
+```
+
+`<source>` - departure airport, IATA Airport Code is a three-letter unique identifier. Three uppercase Latin characters.
+
+`<destination>` - arrival airport, IATA Airport Code is a three-letter unique identifier. Three uppercase Latin characters.
 
 # Description of the test task
 
-Данный проект является вариантом решения [тестового задания](https://github.com/KosyanMedia/test-tasks/tree/master/assisted_team) в команду ассистеда компании [Aviasales](https://www.aviasales.ru/?origin=REN)
+This project is a variant of the solution of the [test task](https://github.com/KosyanMedia/test-tasks/tree/master/assisted_team) to the company's assistant team [Aviasales](https://www.aviasales.ru/?origin=REN)
 
-Задание:
+# Contacts
 
-В папке два XML – это ответы на поисковые запросы, сделанные к одному из наших партнёров. В ответах лежат варианты перелётов (тег `Flights`) со всей необходимой информацией, чтобы отобразить билет на Aviasales.
+[Account in Hexlet](https://ru.hexlet.io/ramilabd).
 
-На основе этих данных, нужно сделать вебсервис, в котором есть эндпоинты, отвечающие на следующие запросы:
+[LinkedIn](https://www.linkedin.com/in/%D1%80%D0%B0%D0%BC%D0%B8%D0%BB%D1%8C-%D0%B0%D0%B1%D0%B4%D1%83%D1%80%D0%B0%D1%85%D0%BC%D0%B0%D0%BD%D0%BE%D0%B2-510793b4/)
 
-- Какие варианты перелёта из DXB в BKK мы получили?
-- Самый дорогой/дешёвый, быстрый/долгий и оптимальный варианты
-- В чём отличия между результатами двух запросов (изменение маршрутов/условий)?
+[Account in Slack](https://hexlet-ru.slack.com/U01611HB7U3)
 
-Язык реализации: `Go`
-Формат ответа: `json`
-По возможности использовать стандартную библиотеку.
+email: rramil.abd@gmail.com
 
-Язык реализации: `python3`
-Формат ответа: `json`
-Используемые библиотеки и инструменты — всё на твой выбор.
+# Gratitude
 
-Оценивать будем умение выполнять задачу имея неполные данные о ней, умение самостоятельно принимать решения и качество кода.
+This project was implemented thanks to the knowledge gained in programming courses [Hexlet](https://ru.hexlet.io). This is a cool resource for learning programming on the Internet. Excellent presentation of information, brain-blowing tasks, complex projects and a cool community. Thanks Hexlet! I'm still studying there. My Projects:
+
+- [python-project-lvl1](https://github.com/ramilabd/python-project-lvl1) - completed
+- [python-project-lvl2](https://github.com/ramilabd/python-project-lvl2) - at work
+
+Also many thanks to the community [Хекслет Комьюнити](hexlet-ru.slack.com) in Slack, for your answers to my stupid questions :)
+
+# License
+
+Copyright Ramil Abdurakhmanov, 2021.
+
+Distributed under the terms of the MIT license, pytest is free and open source software.
