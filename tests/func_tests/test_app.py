@@ -13,16 +13,31 @@ from tests.func_tests.set_json_schemes import (
 )
 
 
-def test_cls_docs(test_client):
-    """Testing a resource: '/docs'.
+def test_cls_mainpage(test_client):
+    """Testing a resource: '/'.
 
-        Check the availability of the web application.
+        Testing a resource represented by the class MainPage.
+        Check the availability of the main page and the type of data returned.
 
     Args:
         test_client (fixture class flask.testing.FlaskClient): application
             Flask for functionaly testing.
     """
-    assert test_client.get('/docs').status_code == 200
+    assert test_client.get('/').status_code == 200
+    assert test_client.get('/').headers['Content-Type'] == 'text/html'
+
+
+def test_cls_docs(test_client):
+    """Testing a resource: '/docs'.
+
+        Testing a resource represented by the class Docs.
+        Check redirection to another url.
+
+    Args:
+        test_client (fixture class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+    """
+    assert test_client.get('/docs').status_code == 302
 
 
 def test_cls_flights(test_client):
@@ -34,6 +49,10 @@ def test_cls_flights(test_client):
         test_client (fixture: class flask.testing.FlaskClient): application
             Flask for functionaly testing.
     """
+    assert test_client.get(
+        '/all_flights',
+    ).headers['Content-Type'] == 'application/json'
+
     assert is_corresponds_to_jsonscheme(
         test_client.get('/all_flights').get_json(force=True),
     )
@@ -63,6 +82,10 @@ def test_cls_routes(test_client):
             jsonschema.validate(route, scheme)
         except jsonschema.exceptions.ValidationError:
             is_json_valide = False
+
+        assert test_client.get(
+            '/all_routes',
+        ).headers['Content-Type'] == 'application/json'
 
         assert is_json_valide
 
@@ -98,6 +121,7 @@ def test_sorting_classes(test_client, get_routes_in_parts):
             response_json = test_client.get(url)
 
             assert response_json.status_code == 200
+            assert response_json.headers['Content-Type'] == 'application/json'
             assert response_json.get_json(force=True)
             assert is_corresponds_to_jsonscheme(
                 response_json.get_json(force=True),

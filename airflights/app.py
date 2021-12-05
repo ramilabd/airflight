@@ -10,18 +10,18 @@ from airflights.data_analysis import (
     get_flights_sorted_time,
     get_optimal_route,
 )
-from flask import Flask
+from flask import Flask, make_response, redirect, render_template
 from flask_restful import Api, Resource
 
 app = Flask(__name__.split('.')[0])
 api = Api(app, default_mediatype='application/json')
 
 
-class Docs(Resource):
+class MainPage(Resource):
     """Represents a specific RESTful resource.
 
         Provides a 'get()' method for the HTTP GET method.
-        RESTful resource: '/docs' or '/'.
+        RESTful resource: '/'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -32,9 +32,32 @@ class Docs(Resource):
         """Request a resource represented by a class.
 
         Returns:
-            string: main page of web service.
+            html: main page of web service.
         """
-        return 'Hello, this main page!', 200
+        headers = {'Content-Type': 'text/html'}
+        return make_response(render_template('index.html'), 200, headers)
+
+
+class Docs(Resource):
+    """Represents a specific RESTful resource.
+
+        Provides a 'get()' method for the HTTP GET method.
+        RESTful resource: '/docs'.
+
+    Args:
+        Resource (class flask_restful.Resource):
+            https://flask-restful.readthedocs.io/en/latest/api.html
+    """
+
+    def get(self):
+        """Request a resource represented by a class.
+
+            Redirects to the documentation page in Github.
+
+        Returns:
+            None.
+        """
+        return redirect('https://github.com/ramilabd/airflights')
 
 
 class Flights(Resource):
@@ -235,7 +258,8 @@ class OptimalRoutes(Resource):
         return [], 404
 
 
-api.add_resource(Docs, '/', '/docs', endpoint='docs')
+api.add_resource(MainPage, '/', endpoint='mainpage')
+api.add_resource(Docs, '/docs', endpoint='docs')
 api.add_resource(Flights, '/all_flights', endpoint='flights')
 api.add_resource(Routes, '/all_routes', endpoint='routes')
 api.add_resource(

@@ -1,0 +1,23 @@
+html, body {
+    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    overflow: hidden;
+    text-align: center;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    flex: 1 0 auto;
+}
+a {
+    text-decoration: none;
+}
+
+.footer {
+    flex-shrink: 0;
+    line-height: 0.8;
+    margin: inherit;
+}
