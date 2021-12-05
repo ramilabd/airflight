@@ -13,6 +13,20 @@ from tests.func_tests.set_json_schemes import (
 )
 
 
+def test_cls_mainpage(test_client):
+    """Testing a resource: '/'.
+
+        Testing a resource represented by the class MainPage.
+        Check the availability of the main page and the type of data returned.
+
+    Args:
+        test_client (fixture class flask.testing.FlaskClient): application
+            Flask for functionaly testing.
+    """
+    assert test_client.get('/').status_code == 200
+    assert test_client.get('/').headers['Content-Type'] == 'text/html'
+
+
 def test_cls_docs(test_client):
     """Testing a resource: '/docs'.
 
