@@ -16,13 +16,13 @@ from tests.func_tests.set_json_schemes import (
 def test_cls_docs(test_client):
     """Testing a resource: '/docs'.
 
-        Check the availability of the web application.
+        Check redirection to another url.
 
     Args:
         test_client (fixture class flask.testing.FlaskClient): application
             Flask for functionaly testing.
     """
-    assert test_client.get('/docs').status_code == 200
+    assert test_client.get('/docs').status_code == 302
 
 
 def test_cls_flights(test_client):

@@ -10,7 +10,7 @@ from airflights.data_analysis import (
     get_flights_sorted_time,
     get_optimal_route,
 )
-from flask import Flask
+from flask import Flask, redirect
 from flask_restful import Api, Resource
 
 app = Flask(__name__.split('.')[0])
@@ -21,7 +21,7 @@ class Docs(Resource):
     """Represents a specific RESTful resource.
 
         Provides a 'get()' method for the HTTP GET method.
-        RESTful resource: '/docs' or '/'.
+        RESTful resource: '/docs'.
 
     Args:
         Resource (class flask_restful.Resource):
@@ -34,7 +34,7 @@ class Docs(Resource):
         Returns:
             string: main page of web service.
         """
-        return 'Hello, this main page!', 200
+        return redirect('https://github.com/ramilabd/airflights')
 
 
 class Flights(Resource):
@@ -235,7 +235,7 @@ class OptimalRoutes(Resource):
         return [], 404
 
 
-api.add_resource(Docs, '/', '/docs', endpoint='docs')
+api.add_resource(Docs, '/docs', endpoint='docs')
 api.add_resource(Flights, '/all_flights', endpoint='flights')
 api.add_resource(Routes, '/all_routes', endpoint='routes')
 api.add_resource(
