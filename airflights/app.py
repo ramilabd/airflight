@@ -52,8 +52,10 @@ class Docs(Resource):
     def get(self):
         """Request a resource represented by a class.
 
+            Redirects to the documentation page in Github.
+
         Returns:
-            string: main page of web service.
+            None.
         """
         return redirect('https://github.com/ramilabd/airflights')
 

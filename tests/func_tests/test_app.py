@@ -30,6 +30,7 @@ def test_cls_mainpage(test_client):
 def test_cls_docs(test_client):
     """Testing a resource: '/docs'.
 
+        Testing a resource represented by the class Docs.
         Check redirection to another url.
 
     Args:
