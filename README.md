@@ -65,13 +65,7 @@ All our API’s are prefixed with `https://airflights.herokuapp.com`.
   /docs
 ```
 
-or
-
-```
-  /
-```
-
-Return: web service documentation page.
+Redirect to web service documentation page.
 
 ```
   /all_flights
