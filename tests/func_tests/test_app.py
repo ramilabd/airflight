@@ -49,6 +49,10 @@ def test_cls_flights(test_client):
         test_client (fixture: class flask.testing.FlaskClient): application
             Flask for functionaly testing.
     """
+    assert test_client.get(
+        '/all_flights',
+    ).headers['Content-Type'] == 'application/json'
+
     assert is_corresponds_to_jsonscheme(
         test_client.get('/all_flights').get_json(force=True),
     )
@@ -78,6 +82,10 @@ def test_cls_routes(test_client):
             jsonschema.validate(route, scheme)
         except jsonschema.exceptions.ValidationError:
             is_json_valide = False
+
+        assert test_client.get(
+            '/all_routes',
+        ).headers['Content-Type'] == 'application/json'
 
         assert is_json_valide
 
@@ -113,6 +121,7 @@ def test_sorting_classes(test_client, get_routes_in_parts):
             response_json = test_client.get(url)
 
             assert response_json.status_code == 200
+            assert response_json.headers['Content-Type'] == 'application/json'
             assert response_json.get_json(force=True)
             assert is_corresponds_to_jsonscheme(
                 response_json.get_json(force=True),
